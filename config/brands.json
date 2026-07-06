@@ -1,0 +1,93 @@
+{
+  "meta": {
+    "description": "目标品牌配置，brand_id 为懂车帝网站品牌 ID",
+    "last_updated": "2026-07-02",
+    "note": "问界、保时捷的 brand_id 待补充，可通过 tools/fetch_brand_ids.py 重新获取"
+  },
+  "brands": [
+    {
+      "name": "比亚迪",
+      "category": "自主新势力",
+      "brand_id": 16,
+      "enabled": true
+    },
+    {
+      "name": "理想",
+      "category": "自主新势力",
+      "brand_id": 202,
+      "enabled": true
+    },
+    {
+      "name": "蔚来",
+      "category": "自主新势力",
+      "brand_id": 112,
+      "enabled": true
+    },
+    {
+      "name": "小鹏",
+      "category": "自主新势力",
+      "brand_id": 195,
+      "enabled": true
+    },
+    {
+      "name": "问界",
+      "category": "自主新势力",
+      "brand_id": null,
+      "enabled": true
+    },
+    {
+      "name": "小米",
+      "category": "自主新势力",
+      "brand_id": 535,
+      "enabled": true
+    },
+    {
+      "name": "宝马",
+      "category": "德系豪华",
+      "brand_id": 4,
+      "enabled": true
+    },
+    {
+      "name": "奔驰",
+      "category": "德系豪华",
+      "brand_id": 3,
+      "enabled": true
+    },
+    {
+      "name": "奥迪",
+      "category": "德系豪华",
+      "brand_id": 2,
+      "enabled": true
+    },
+    {
+      "name": "保时捷",
+      "category": "德系豪华",
+      "brand_id": null,
+      "enabled": true
+    },
+    {
+      "name": "丰田",
+      "category": "主流合资",
+      "brand_id": 5,
+      "enabled": true
+    },
+    {
+      "name": "本田",
+      "category": "主流合资",
+      "brand_id": 9,
+      "enabled": true
+    },
+    {
+      "name": "大众",
+      "category": "主流合资",
+      "brand_id": 1,
+      "enabled": true
+    },
+    {
+      "name": "日产",
+      "category": "主流合资",
+      "brand_id": 10,
+      "enabled": true
+    }
+  ]
+}

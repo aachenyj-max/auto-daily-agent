@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>汽车日报工作台</title>
+  <link rel="stylesheet" href="src/styles.css" />
+</head>
+<body>
+  <header class="toolbar">
+    <div class="brand">
+      <span class="brand-mark">日报</span>
+      <div>
+        <h1 class="logo">汽车日报工作台</h1>
+        <p class="subtitle">查看 output/ 产物，也可以提交生成任务</p>
+      </div>
+    </div>
+    <div class="toolbar-actions">
+      <button id="btn-prev" class="btn btn-secondary" type="button">前一天</button>
+      <input type="date" id="date-picker" />
+      <button id="btn-next" class="btn btn-secondary" type="button">后一天</button>
+      <button id="btn-today" class="btn btn-primary" type="button">今天</button>
+      <button id="btn-reload" class="btn btn-secondary" type="button">重新加载</button>
+      <div class="search-box">
+        <input type="text" id="search-input" placeholder="搜索报告内容" />
+        <span id="search-count"></span>
+      </div>
+      <button id="btn-clear-search" class="btn btn-secondary" type="button">清除搜索</button>
+      <a id="open-report-link" class="btn btn-ghost" href="#" target="_blank" rel="noopener">打开文件</a>
+    </div>
+  </header>
+
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <section class="side-section">
+        <h2>最近查看</h2>
+        <ul id="recent-list"></ul>
+      </section>
+      <section class="side-section">
+        <h2>快捷任务</h2>
+        <button class="quick-prompt" type="button" data-prompt="生成今天的汽车总览日报，并给出购买建议">总览日报</button>
+        <button class="quick-prompt" type="button" data-prompt="生成今天小鹏汽车日报，重点分析小鹏MONA M03">小鹏日报</button>
+        <button class="quick-prompt" type="button" data-prompt="生成小米SU7单车分析报告，并给出购买建议">小米SU7</button>
+        <button class="quick-prompt" type="button" data-prompt="生成20万以内SUV购买建议">20万内SUV</button>
+      </section>
+    </aside>
+
+    <main class="content">
+      <section class="generate-panel" aria-label="生成报告">
+        <div class="generate-head">
+          <div>
+            <h2>生成任务</h2>
+            <p>输入你想要的报告，例如单车企、单车型、车型对比或条件筛选。</p>
+          </div>
+          <button id="btn-generate" class="btn btn-primary" type="button">生成</button>
+        </div>
+        <textarea id="generate-prompt" rows="3" placeholder="例如：生成今天小鹏汽车日报，重点分析MONA M03"></textarea>
+        <div class="generate-options">
+          <label class="checkline">
+            <input type="checkbox" id="use-llm-parser" />
+            使用大模型解析需求
+          </label>
+          <input type="password" id="api-key-input" placeholder="API Key（可选，仅本次请求使用）" autocomplete="off" />
+        </div>
+        <div id="job-panel" class="job-panel" hidden>
+          <div class="job-line">
+            <span id="job-step">等待中</span>
+            <strong id="job-message">任务已创建</strong>
+          </div>
+          <div class="progress-track"><span id="job-progress"></span></div>
+          <pre id="job-task" class="job-task"></pre>
+        </div>
+      </section>
+
+      <section class="summary-strip" aria-label="当前报告状态">
+        <div class="summary-item">
+          <span class="summary-label">日期</span>
+          <strong id="summary-date">-</strong>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">文件</span>
+          <strong id="summary-file">未加载</strong>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">字符数</span>
+          <strong id="summary-size">-</strong>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">状态</span>
+          <strong id="summary-state">就绪</strong>
+        </div>
+      </section>
+
+      <div id="status-bar"></div>
+      <article id="report-content" class="report-body">
+        <p class="placeholder">请选择日期加载日报，或在上方输入生成任务。</p>
+      </article>
+    </main>
+  </div>
+
+  <footer class="statusbar">
+    <span id="footer-info">就绪</span>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="src/report-viewer.js"></script>
+  <script src="src/main.js"></script>
+</body>
+</html>

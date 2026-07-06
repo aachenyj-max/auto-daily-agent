@@ -1,0 +1,85 @@
+# 汽车日报 Agent 全局配置
+
+# 懂车帝 API 配置
+dongchedi:
+  base_url: "https://www.dongchedi.com"
+  api:
+    rank_data: "/motor/pc/car/rank_data"
+    car_list: "/motor/pc/car/series/car_list"
+    car_detail: "/motor/pc/car/series/detail"
+    car_params: "/motor/pc/car/series/car_params"
+  params:
+    aid: 1839
+    app_name: "auto_web_pc"
+    city_name: "北京"
+  headers:
+    User-Agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    Referer: "https://www.dongchedi.com/"
+    Accept: "application/json, text/plain, */*"
+
+# 目标车型分类
+categories:
+  - name: "新能源"
+    new_energy_type: [1, 2]  # 1=纯电, 2=插混/增程
+  - name: "轿车"
+    body_type: 1
+  - name: "SUV"
+    body_type: 2
+
+# 请求控制
+request:
+  delay: 1.5  # 请求间隔（秒）
+  timeout: 10  # 请求超时（秒）
+  retry: 3  # 失败重试次数
+
+# 输出配置
+output:
+  date_format: "YYYY-MM-DD"
+  markdown_ext: ".md"
+  json_ext: ".json"
+
+# web-scraper 补充管线配置（HTML 页面抓取 + markitdown 清洗）
+web_scraper:
+  # 车型参数页 URL 模板（{series_id} 会被替换）
+  series_params_url: "https://www.dongchedi.com/auto/params-carIds-{series_id}"
+  # 车系详情页 URL 模板
+  series_detail_url: "https://www.dongchedi.com/auto/series/{series_id}"
+  # 评测文章列表页 URL 模板
+  article_list_url: "https://www.dongchedi.com/auto/series/{series_id}/article"
+
+  # CSS 选择器（懂车帝页面结构，可能需要根据实际页面调整）
+  selectors:
+    # 参数页
+    param_table: ".param-table tr"              # 参数表行
+    param_name: ".param-name"                   # 参数名
+    param_value: ".param-value"                 # 参数值
+    # 详情页
+    price_range: ".price-range"                 # 价格区间
+    series_title: ".series-title"               # 车系名称
+    # 评测列表
+    article_item: ".article-item"               # 评测条目
+    article_title: ".article-title a"           # 评测标题
+    article_link: ".article-title a[href]"      # 评测链接
+
+  # 抓取控制
+  max_series_per_run: 10        # 每次运行最多抓取多少个车系详情
+  max_articles_per_series: 3    # 每个车系最多抓取几篇评测
+
+  # 输出路径
+  output_raw_dir: "data/raw/enriched"           # 原始 HTML / JSON 中间产物
+  output_clean_dir: "data/processed/enriched"   # markitdown 清洗后的 Markdown
+
+# markitdown 配置
+markitdown:
+  # 是否启用 LLM 辅助图片描述（需要配置 OPENAI_API_KEY）
+  enable_llm_description: false
+  # 支持的输入格式
+  supported_formats: [".html", ".json", ".csv", ".xml", ".pdf", ".docx", ".xlsx"]
+
+# LLM 配置（智谱 AI / BigModel）
+llm:
+  api_key: ""
+  api_base: "https://open.bigmodel.cn/api/paas/v4"
+  model: "glm-4-flash"
+  temperature: 0.7
+  max_tokens: 4000

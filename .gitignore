@@ -1,0 +1,35 @@
+# Python environments and caches
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Local environment and secrets
+.env
+.env.*
+*.local
+config/local.yaml
+config/*.local.yaml
+data/cookies.json
+data/session_info.json
+data/raw/*.json
+data/raw/enriched/*
+!data/raw/enriched/.gitkeep
+data/processed/*.json
+data/processed/enriched/*.json
+output/*.md
+!output/README.md
+
+# Logs and debug captures
+logs/
+*.log
+data/raw/enriched/*.html
+
+# Tooling and OS noise
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.DS_Store
+Thumbs.db
