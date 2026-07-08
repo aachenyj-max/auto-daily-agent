@@ -181,7 +181,7 @@ def process(raw_file):
             "name": brand_name,
             "model_count": len(brand_cars),
             "top_model": models[0] if models else None,
-            "models": models[:10],  # 只保留TOP10
+            "models": models,
         })
 
     # 市场概览

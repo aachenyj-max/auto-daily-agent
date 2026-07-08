@@ -12,7 +12,7 @@
       <span class="brand-mark">日报</span>
       <div>
         <h1 class="logo">汽车日报工作台</h1>
-        <p class="subtitle">查看 output/ 产物，也可以提交生成任务</p>
+        <p class="subtitle">查看 output/ 产物，并管理已生成报告</p>
       </div>
     </div>
     <div class="toolbar-actions">
@@ -22,7 +22,7 @@
       <button id="btn-today" class="btn btn-primary" type="button">今天</button>
       <button id="btn-reload" class="btn btn-secondary" type="button">重新加载</button>
       <div class="search-box">
-        <input type="text" id="search-input" placeholder="搜索报告内容" />
+        <input type="text" id="search-input" placeholder="搜索当前报告内容" />
         <span id="search-count"></span>
       </div>
       <button id="btn-clear-search" class="btn btn-secondary" type="button">清除搜索</button>
@@ -33,15 +33,48 @@
   <div class="app-shell">
     <aside class="sidebar" id="sidebar">
       <section class="side-section">
-        <h2>最近查看</h2>
+        <div class="side-header">
+          <h2>最近查看</h2>
+        </div>
         <ul id="recent-list"></ul>
       </section>
+
+      <section class="side-section">
+        <div class="side-header">
+          <h2>报告管理</h2>
+          <button id="btn-refresh-list" class="btn btn-secondary btn-small" type="button">刷新</button>
+        </div>
+        <div class="report-filters">
+          <input id="filter-keyword" type="text" placeholder="关键词 / 品牌 / 车型" />
+          <div class="filter-grid">
+            <select id="filter-status">
+              <option value="active">启用中</option>
+              <option value="archived">已归档</option>
+              <option value="">全部状态</option>
+            </select>
+            <select id="filter-type">
+              <option value="">全部类型</option>
+              <option value="market">市场</option>
+              <option value="brand">品牌</option>
+              <option value="series">车型</option>
+              <option value="compare">对比</option>
+              <option value="filtered">筛选</option>
+            </select>
+          </div>
+          <div class="filter-grid">
+            <input id="filter-date-from" type="date" />
+            <input id="filter-date-to" type="date" />
+          </div>
+        </div>
+        <ul id="managed-report-list" class="managed-report-list"></ul>
+      </section>
+
       <section class="side-section">
         <h2>快捷任务</h2>
         <button class="quick-prompt" type="button" data-prompt="生成今天的汽车总览日报，并给出购买建议">总览日报</button>
-        <button class="quick-prompt" type="button" data-prompt="生成今天小鹏汽车日报，重点分析小鹏MONA M03">小鹏日报</button>
-        <button class="quick-prompt" type="button" data-prompt="生成小米SU7单车分析报告，并给出购买建议">小米SU7</button>
-        <button class="quick-prompt" type="button" data-prompt="生成20万以内SUV购买建议">20万内SUV</button>
+        <button class="quick-prompt" type="button" data-prompt="生成今天小鹏汽车日报，重点分析 MONA M03">小鹏日报</button>
+        <button class="quick-prompt" type="button" data-prompt="生成小米SU7单车分析报告，并给出购买建议">小米 SU7</button>
+        <button class="quick-prompt" type="button" data-prompt="生成20万以内SUV购买建议">20万内 SUV</button>
       </section>
     </aside>
 
@@ -50,25 +83,42 @@
         <div class="generate-head">
           <div>
             <h2>生成任务</h2>
-            <p>输入你想要的报告，例如单车企、单车型、车型对比或条件筛选。</p>
+            <p>输入你想要的报告，例如单车、品牌、对比或筛选建议。</p>
           </div>
           <button id="btn-generate" class="btn btn-primary" type="button">生成</button>
         </div>
-        <textarea id="generate-prompt" rows="3" placeholder="例如：生成今天小鹏汽车日报，重点分析MONA M03"></textarea>
+        <textarea id="generate-prompt" rows="3" placeholder="例如：生成今天小鹏汽车日报，重点分析 MONA M03"></textarea>
         <div class="generate-options">
-          <label class="checkline">
-            <input type="checkbox" id="use-llm-parser" />
-            使用大模型解析需求
-          </label>
-          <input type="password" id="api-key-input" placeholder="API Key（可选，仅本次请求使用）" autocomplete="off" />
+          <span id="model-status" class="model-status">正在检查大模型状态</span>
         </div>
         <div id="job-panel" class="job-panel" hidden>
           <div class="job-line">
-            <span id="job-step">等待中</span>
+            <span id="job-step">queued</span>
             <strong id="job-message">任务已创建</strong>
           </div>
           <div class="progress-track"><span id="job-progress"></span></div>
           <pre id="job-task" class="job-task"></pre>
+        </div>
+      </section>
+
+      <section class="manage-panel" aria-label="当前报告管理">
+        <div class="manage-head">
+          <div>
+            <h2>当前报告</h2>
+            <p id="selected-report-meta">未选中管理对象</p>
+          </div>
+          <div class="manage-actions">
+            <button id="btn-archive-current" class="btn btn-secondary" type="button">归档当前报告</button>
+            <button id="btn-restore-current" class="btn btn-secondary" type="button">恢复当前报告</button>
+          </div>
+        </div>
+        <div class="followup-box">
+          <label for="followup-input">继续交流</label>
+          <textarea id="followup-input" rows="2" placeholder="例如：基于这份报告，只看20万以内车型，再生成一个购买建议版"></textarea>
+          <div class="followup-actions">
+            <span id="followup-target">当前未绑定报告</span>
+            <button id="btn-followup" class="btn btn-primary" type="button">基于当前报告继续生成</button>
+          </div>
         </div>
       </section>
 
@@ -93,7 +143,7 @@
 
       <div id="status-bar"></div>
       <article id="report-content" class="report-body">
-        <p class="placeholder">请选择日期加载日报，或在上方输入生成任务。</p>
+        <p class="placeholder">请选择一份报告，或在上方输入新的生成任务。</p>
       </article>
     </main>
   </div>

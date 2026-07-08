@@ -103,6 +103,8 @@ http://127.0.0.1:8000/frontend/index.html
 
 当前前端支持日期选择、今天、前一天、后一天、重新加载、清除搜索、打开日报文件、最近查看记录、关键词搜索和 Markdown 渲染。前端只读取日报产物，不修改 `output/`、`data/` 或 `config/`。
 
+也可以直接双击 `start_viewer.cmd`，它会在本地启动只读查看器并自动打开浏览器。
+
 ## 配置
 
 - `config/settings.yaml` — API 配置、请求控制、LLM 配置、web_scraper 抓取目标
@@ -113,6 +115,29 @@ http://127.0.0.1:8000/frontend/index.html
 
 - `docs/frontend-local-viewer.md` — 本地查看器规划与边界
 - `progress.md` — 当前进度和后续任务
+- `docs/runtime-task-log.md` — 工作台和后台 agent 运行记录
+
+## Agent 协作与进度记录
+
+每次开发任务都要把过程记录到 `progress.md`：开始时记录目标、上下文、计划和待办，完成时记录已改内容、验证命令、产物路径和剩余风险。这样即使任务中断，下一次接手也能从 `progress.md` 继续。
+
+工作台或后台 agent 的运行结果不要继续堆到 `progress.md`。这类 `run/ask/refuse`、输出文件、质量状态和风险提示统一记录到 `docs/runtime-task-log.md`。
+
+每次运行或接手任务时，先阅读 `AGENTS.md`、本文件和 `progress.md`。进入 `tools/`、`skills/`、`config/`、`data/`、`output/`、`frontend/` 或 `docs/` 前，再阅读该目录的 `README.md`，按索引打开必要文件，避免反复扫描大目录浪费 token。
+
+每次修改代码、配置、数据约定、入口脚本或目录职责时，都要同步检查并按需更新 `AGENTS.md`、根 `README.md`、`progress.md` 和受影响一级目录的 `README.md`。若仓库规则、数据可信度约束或报告写作要求变化，还要同步更新 `config/agent_prompt.md`。
+
+## 目录 README 索引
+
+各一级目录的 `README.md` 是给人和大模型 agent 使用的快速地图。处理某个目录前，优先阅读对应 README，避免直接扫描全部文件：
+
+- `tools/README.md` — 脚本入口、工作流、动态生成和 enriched 校验说明
+- `skills/README.md` — 本地技能用途和读取路由
+- `config/README.md` — 配置文件、LLM 设置和安全约束
+- `data/README.md` — raw/processed/enriched 数据角色和可信度提示
+- `output/README.md` — 报告命名、生产者和消费者
+- `frontend/README.md` — 本地工作台文件、API 合约和验证命令
+- `docs/README.md` — 规划文档索引
 # 新版本地工作台入口
 
 网页生成输入框需要启动工作流服务：
@@ -121,17 +146,86 @@ http://127.0.0.1:8000/frontend/index.html
 python tools\workflow_server.py
 ```
 
+也可以直接双击 `start_workbench.cmd`，它会在本地启动工作台服务并自动打开浏览器。
+
 启动后访问：
 
 ```text
-http://127.0.0.1:8080/frontend/
+http://127.0.0.1:8000/frontend/
 ```
 
-前端可以输入自然语言任务，例如“生成今天小鹏汽车日报，重点分析小鹏MONA M03”或“生成20万以内SUV购买建议”。后端只执行白名单工作流：解析需求、确认当天数据、抓取/清洗/补充缺失数据、生成 Markdown、校验产物。API Key 可在页面临时输入，仅用于本次请求。
+前端可以输入自然语言任务，例如“生成今天小鹏汽车日报，重点分析小鹏MONA M03”或“生成20万以内SUV购买建议”。后端只执行白名单工作流：解析需求、确认当天数据、抓取/清洗/补充缺失数据、生成 Markdown、校验产物。API Key 不在页面显示或传输，应由本地后端通过环境变量或私有本地配置提供。
+
+生成任务默认启用大模型路径。工作流分为两套 LLM profile：`workflow` 负责解析自然语言任务，系统提示词为 `config/workflow_prompt.md`；`report` 负责生成报告正文，系统提示词为 `config/report_agent_prompt.md`。若某一路 LLM 配置缺失或调用失败，会自动回退到规则模板或规则解析。
+
+本地后端支持以下私有配置方式，均已被 `.gitignore` 忽略：
+
+```powershell
+$env:WORKFLOW_LLM_API_KEY="..."
+$env:WORKFLOW_LLM_API_BASE="https://open.bigmodel.cn/api/paas/v4"
+$env:WORKFLOW_LLM_MODEL="glm-4-flash"
+$env:REPORT_LLM_API_KEY="..."
+$env:REPORT_LLM_API_BASE="https://open.bigmodel.cn/api/paas/v4"
+$env:REPORT_LLM_MODEL="glm-4-flash"
+```
+
+也可在仓库根目录创建 `.env.local`：
+
+```text
+WORKFLOW_LLM_API_KEY=...
+WORKFLOW_LLM_API_BASE=https://open.bigmodel.cn/api/paas/v4
+WORKFLOW_LLM_MODEL=glm-4-flash
+REPORT_LLM_API_KEY=...
+REPORT_LLM_API_BASE=https://open.bigmodel.cn/api/paas/v4
+REPORT_LLM_MODEL=glm-4-flash
+```
+
+或创建 `config/local.yaml`：
+
+```yaml
+llm:
+  workflow:
+    api_key: "..."
+    api_base: "https://open.bigmodel.cn/api/paas/v4"
+    model: "glm-4-flash"
+  report:
+    api_key: "..."
+    api_base: "https://open.bigmodel.cn/api/paas/v4"
+    model: "glm-4-flash"
+```
+
+前端会请求 `/api/llm/status` 显示 `workflow` 和 `report` 两套大模型是否已配置，并在任务完成时显示本次是否真正使用了正文大模型或回退原因。工作流任务支持 `action=run|ask|refuse`：`ask` 会返回 `needs_input` 并展示追问，`refuse` 会返回 `refused` 并展示安全原因；job 结果中的 `workflow_notes` 和 `risk_notes` 用于解释默认策略、风险和降级。
+
+动态生成器会读取 `data/processed/enriched/YYYY-MM-DD.json` 的车型补充配置，但只有当参数正文通过车型名或版本名匹配校验时才会写入报告。未通过校验的配置会被跳过，避免把错配车型参数写进日报。
 
 ## 2026-07-06 安全说明
 
-- 不要把 LLM API Key 写入 `config/settings.yaml` 后提交；请使用 `LLM_API_KEY` 环境变量、命令行 `--api-key`，或在网页中临时输入。
-- 网页输入的 API Key 只随本次请求发送给本地后端，不写入前端存储。
+- 不要把 LLM API Key 写入 `config/settings.yaml` 后提交；请使用 `WORKFLOW_LLM_*`、`REPORT_LLM_*` 环境变量、`.env.local` 或 `config/local.yaml`。
+- 网页不显示 API Key 输入框，也不保存或传输 API Key；请使用环境变量或私有本地配置。
 - `tools/workflow_server.py` 只执行白名单工作流，不接受任意 Shell 命令。
 - `data/cookies.json`、`data/session_info.json`、`.env` 和 `config/local.yaml` 已加入忽略规则。
+
+## 2026-07-07 Backend Agent Stages
+
+The workbench backend now uses a staged whitelist agent instead of a single opaque workflow hop.
+
+- `tools/agent_runner.py` is the backend entry for workbench generation jobs.
+- `tools/tool_registry.py` defines the only allowed tool chain:
+  `read_context -> inspect_request -> inspect_data -> prepare_data -> build_context -> generate_report -> validate_report -> quality_check`
+- `tools/workflow_runner.py` still owns the safe workflow primitives, but they are now exposed as explicit stages so the agent can execute and trace them separately.
+- Job results may include `agent_trace` and `agent_task_context` for debugging and audit.
+
+## 2026-07-08 Managed Report Layer
+
+The workbench now includes a managed report layer on top of raw `output/*.md` files.
+
+- Report metadata is indexed in `data/managed_reports/index.json`.
+- `tools/report_registry.py` keeps that index in sync with `output/` and stores filter, archive, and follow-up metadata.
+- The workbench API now supports:
+  - `GET /api/reports/list`
+  - `GET /api/reports/<report_id>`
+  - `POST /api/reports/archive`
+  - `POST /api/reports/restore`
+  - `POST /api/reports/followup`
+- Archive is soft only in the MVP. It changes metadata state and does not physically delete Markdown files.
+- Follow-up generation is bound to a selected report and writes a new follow-up file instead of overwriting the source report.

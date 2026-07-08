@@ -1,0 +1,731 @@
+{
+  "version": 1,
+  "updated_at": "2026-07-08T13:14:56+08:00",
+  "reports": [
+    {
+      "report_id": "rpt_2026-07-07_compare_compare-su7-vs-yu7-2026-07-07-followup-101014",
+      "file_name": "compare-su7-vs-yu7-2026-07-07-followup-101014.md",
+      "file_path": "output/compare-su7-vs-yu7-2026-07-07-followup-101014.md",
+      "report_type": "compare",
+      "date": "2026-07-07",
+      "title": "车型对比报告 - 2026-07-07",
+      "status": "archived",
+      "deleted_at": "2026-07-08T13:14:41+08:00",
+      "archived_reason": "manual archive from workbench",
+      "created_at": "2026-07-08T10:10:14+08:00",
+      "updated_at": "2026-07-08T13:14:56+08:00",
+      "file_mtime": "2026-07-08T10:10:14+08:00",
+      "source": {
+        "entry": "workflow_server",
+        "job_id": "job-20260708-101013-c978a1",
+        "generator": "dynamic_report_generator",
+        "llm_used": false
+      },
+      "scope": {
+        "brands": [],
+        "series": [
+          "小米SU7",
+          "小米YU7"
+        ],
+        "comparison_pairs": [
+          "小米SU7",
+          "小米YU7"
+        ],
+        "filters": [
+          "body_type:轿车"
+        ]
+      },
+      "conversation": {
+        "continuable": true,
+        "last_followup_at": null,
+        "followup_count": 0,
+        "base_prompt": "基于已生成报告继续分析。\n原报告标题：车型对比报告 - 2026-07-07\n原报告日期：2026-07-07\n原报告类型：compare\n原始任务：基于已生成报告继续分析。\n原报告标题：车型对比报告 - 2026-07-07\n原报告日期：2026-07-07\n原报告类型：compare\n原始任务：基于已生成报告继续分析。\n原报告标题：车型对比报告 - 2026-07-07\n原报告日期：2026-07-07\n原报告类型：compare\n原始任务：小米SU7 vs 小米YU7 对比日报\n报告范围：车型：小米SU7、小米YU7；对比：小米SU7、小米YU7；筛选：body_type:轿车\n报告摘要：原报告标题：小米SU7 vs 小米YU7 对比日报 原报告日期：2026-07-07 原报告类型：compare 原始任务：小米SU7 vs 小米YU7 对比日报 报告范围：无 报告摘要：**日期：** 2026-07-07 **品牌：** 小米汽车 **对比车系：** 小米SU7（轿车） vs 小米YU7（SUV） 新的补充要求：????????????? 请延续原报告上下文生成新的受控日报任务，不要脱离上述日期和对象。\n新的补充要求：?????????????\n请延续原报告上下文生成新的受控日报任务，不要脱离上述日期和对象。\n报告范围：车型：小米SU7、小米YU7；对比：小米SU7、小米YU7；筛选：body_type:轿车\n报告摘要：原报告标题：车型对比报告 - 2026-07-07 原报告日期：2026-07-07 原报告类型：compare 原始任务：小米SU7 vs 小米YU7 对比日报 报告范围：车型：小米SU7、小米YU7；对比：小米SU7、小米YU7；筛选：body_type:轿车 报告摘要：原报告标题：小米SU7 vs 小米YU7 对比日报 原报告日期：2026-07-07 原报告类型：compare 原始任务：小米SU7 vs 小米YU7 对比日报 \n新的补充要求：?????????????\n请延续原报告上下文生成新的受控日报任务，不要脱离上述日期和对象。\n报告范围：车型：小米YU7、小米SU7；对比：小米YU7、小米SU7；筛选：body_type:轿车\n报告摘要：原报告标题：车型对比报告 - 2026-07-07 原报告日期：2026-07-07 原报告类型：compare 原始任务：基于已生成报告继续分析。 原报告标题：车型对比报告 - 2026-07-07 原报告日期：2026-07-07 原报告类型：compare 原始任务：小米SU7 vs 小米YU7 对比日报 报告范围：车型：小米SU7、小米YU7；对比：小米SU7、小米YU7；筛选：body_type:轿车\n新的补充要求：?????????????\n请延续原报告上下文生成新的受控日报任务，不要脱离上述日期和对象。"
+      },
+      "summary": {
+        "excerpt": "原报告标题：车型对比报告 - 2026-07-07 原报告日期：2026-07-07 原报告类型：compare 原始任务：基于已生成报告继续分析。 原报告标题：车型对比报告 - 2026-07-07 原报告日期：2026-07-07 原报告类型：compare 原始任务：基于已生成报告继续分析。 原报告标题：车型对比报告 - 2026-07-07 原报告日期：2026-07-07",
+        "word_count": 1646
+      },
+      "task": {
+        "action": "run",
+        "report_type": "compare",
+        "date": "2026-07-07",
+        "brand": null,
+        "series": null,
+        "compare_series": [
+          "小米SU7",
+          "小米YU7"
+        ],
+        "filters": {
+          "body_type": "轿车"
+        },
+        "focus": [
+          "小米SU7",
+          "小米YU7"
+        ],
+        "output_name": null,
+        "source_prompt": "基于已生成报告继续分析。\n原报告标题：车型对比报告 - 2026-07-07\n原报告日期：2026-07-07\n原报告类型：compare\n原始任务：基于已生成报告继续分析。\n原报告标题：车型对比报告 - 2026-07-07\n原报告日期：2026-07-07\n原报告类型：compare\n原始任务：基于已生成报告继续分析。\n原报告标题：车型对比报告 - 2026-07-07\n原报告日期：2026-07-07\n原报告类型：compare\n原始任务：小米SU7 vs 小米YU7 对比日报\n报告范围：车型：小米SU7、小米YU7；对比：小米SU7、小米YU7；筛选：body_type:轿车\n报告摘要：原报告标题：小米SU7 vs 小米YU7 对比日报 原报告日期：2026-07-07 原报告类型：compare 原始任务：小米SU7 vs 小米YU7 对比日报 报告范围：无 报告摘要：**日期：** 2026-07-07 **品牌：** 小米汽车 **对比车系：** 小米SU7（轿车） vs 小米YU7（SUV） 新的补充要求：????????????? 请延续原报告上下文生成新的受控日报任务，不要脱离上述日期和对象。\n新的补充要求：?????????????\n请延续原报告上下文生成新的受控日报任务，不要脱离上述日期和对象。\n报告范围：车型：小米SU7、小米YU7；对比：小米SU7、小米YU7；筛选：body_type:轿车\n报告摘要：原报告标题：车型对比报告 - 2026-07-07 原报告日期：2026-07-07 原报告类型：compare 原始任务：小米SU7 vs 小米YU7 对比日报 报告范围：车型：小米SU7、小米YU7；对比：小米SU7、小米YU7；筛选：body_type:轿车 报告摘要：原报告标题：小米SU7 vs 小米YU7 对比日报 原报告日期：2026-07-07 原报告类型：compare 原始任务：小米SU7 vs 小米YU7 对比日报 \n新的补充要求：?????????????\n请延续原报告上下文生成新的受控日报任务，不要脱离上述日期和对象。\n报告范围：车型：小米YU7、小米SU7；对比：小米YU7、小米SU7；筛选：body_type:轿车\n报告摘要：原报告标题：车型对比报告 - 2026-07-07 原报告日期：2026-07-07 原报告类型：compare 原始任务：基于已生成报告继续分析。 原报告标题：车型对比报告 - 2026-07-07 原报告日期：2026-07-07 原报告类型：compare 原始任务：小米SU7 vs 小米YU7 对比日报 报告范围：车型：小米SU7、小米YU7；对比：小米SU7、小米YU7；筛选：body_type:轿车\n新的补充要求：?????????????\n请延续原报告上下文生成新的受控日报任务，不要脱离上述日期和对象。",
+        "clarifying_question": null,
+        "workflow_notes": [],
+        "risk_notes": []
+      }
+    },
+    {
+      "report_id": "rpt_2026-07-07_compare_compare-su7-vs-yu7-2026-07-07",
+      "file_name": "compare-su7-vs-yu7-2026-07-07.md",
+      "file_path": "output/compare-su7-vs-yu7-2026-07-07.md",
+      "report_type": "compare",
+      "date": "2026-07-07",
+      "title": "车型对比报告 - 2026-07-07",
+      "status": "archived",
+      "deleted_at": "2026-07-08T13:14:43+08:00",
+      "archived_reason": "manual archive from workbench",
+      "created_at": "2026-07-07T18:42:19+08:00",
+      "updated_at": "2026-07-08T13:14:56+08:00",
+      "file_mtime": "2026-07-08T10:10:14+08:00",
+      "source": {
+        "entry": "workflow_server",
+        "job_id": "job-20260707-184450-becd8a",
+        "generator": "dynamic_report_generator",
+        "llm_used": false
+      },
+      "scope": {
+        "brands": [],
+        "series": [
+          "小米SU7",
+          "小米YU7"
+        ],
+        "comparison_pairs": [
+          "小米SU7",
+          "小米YU7"
+        ],
+        "filters": [
+          "body_type:轿车"
+        ]
+      },
+      "conversation": {
+        "continuable": true,
+        "last_followup_at": "2026-07-07T18:45:44+08:00",
+        "followup_count": 2,
+        "base_prompt": "小米SU7 vs 小米YU7 对比日报"
+      },
+      "summary": {
+        "excerpt": "原报告标题：小米SU7 vs 小米YU7 对比日报 原报告日期：2026-07-07 原报告类型：compare 原始任务：小米SU7 vs 小米YU7 对比日报 报告范围：无 报告摘要：**日期：** 2026-07-07 **品牌：** 小米汽车 **对比车系：** 小米SU7（轿车） vs 小米YU7（SUV） 新的补充要求：????????????? 请延续原报告上下文生成新的受控日报任务，不要脱离上述日期和对象。",
+        "word_count": 655
+      },
+      "task": {
+        "action": "run",
+        "report_type": "compare",
+        "date": "2026-07-07",
+        "brand": null,
+        "series": null,
+        "compare_series": [
+          "小米SU7",
+          "小米YU7"
+        ],
+        "filters": {
+          "body_type": "轿车"
+        },
+        "focus": [
+          "小米SU7",
+          "小米YU7"
+        ],
+        "output_name": null,
+        "source_prompt": "基于已生成报告继续分析。\n原报告标题：小米SU7 vs 小米YU7 对比日报\n原报告日期：2026-07-07\n原报告类型：compare\n原始任务：小米SU7 vs 小米YU7 对比日报\n报告范围：无\n报告摘要：**日期：** 2026-07-07 **品牌：** 小米汽车 **对比车系：** 小米SU7（轿车） vs 小米YU7（SUV）\n新的补充要求：?????????????\n请延续原报告上下文生成新的受控日报任务，不要脱离上述日期和对象。",
+        "clarifying_question": null,
+        "workflow_notes": [],
+        "risk_notes": []
+      }
+    },
+    {
+      "report_id": "rpt_2026-07-07_compare_compare-yu7-vs-su7-2026-07-07",
+      "file_name": "compare-yu7-vs-su7-2026-07-07.md",
+      "file_path": "output/compare-yu7-vs-su7-2026-07-07.md",
+      "report_type": "compare",
+      "date": "2026-07-07",
+      "title": "车型对比报告 - 2026-07-07",
+      "status": "active",
+      "deleted_at": null,
+      "archived_reason": null,
+      "created_at": "2026-07-08T10:07:23+08:00",
+      "updated_at": "2026-07-08T13:14:56+08:00",
+      "file_mtime": "2026-07-08T10:07:23+08:00",
+      "source": {
+        "entry": "workflow_server",
+        "job_id": "job-20260708-100722-6bb2b9",
+        "generator": "dynamic_report_generator",
+        "llm_used": false
+      },
+      "scope": {
+        "brands": [],
+        "series": [
+          "小米YU7",
+          "小米SU7"
+        ],
+        "comparison_pairs": [
+          "小米YU7",
+          "小米SU7"
+        ],
+        "filters": [
+          "body_type:轿车"
+        ]
+      },
+      "conversation": {
+        "continuable": true,
+        "last_followup_at": "2026-07-08T10:10:14+08:00",
+        "followup_count": 1,
+        "base_prompt": "基于已生成报告继续分析。\n原报告标题：车型对比报告 - 2026-07-07\n原报告日期：2026-07-07\n原报告类型：compare\n原始任务：基于已生成报告继续分析。\n原报告标题：车型对比报告 - 2026-07-07\n原报告日期：2026-07-07\n原报告类型：compare\n原始任务：小米SU7 vs 小米YU7 对比日报\n报告范围：车型：小米SU7、小米YU7；对比：小米SU7、小米YU7；筛选：body_type:轿车\n报告摘要：原报告标题：小米SU7 vs 小米YU7 对比日报 原报告日期：2026-07-07 原报告类型：compare 原始任务：小米SU7 vs 小米YU7 对比日报 报告范围：无 报告摘要：**日期：** 2026-07-07 **品牌：** 小米汽车 **对比车系：** 小米SU7（轿车） vs 小米YU7（SUV） 新的补充要求：????????????? 请延续原报告上下文生成新的受控日报任务，不要脱离上述日期和对象。\n新的补充要求：?????????????\n请延续原报告上下文生成新的受控日报任务，不要脱离上述日期和对象。\n报告范围：车型：小米SU7、小米YU7；对比：小米SU7、小米YU7；筛选：body_type:轿车\n报告摘要：原报告标题：车型对比报告 - 2026-07-07 原报告日期：2026-07-07 原报告类型：compare 原始任务：小米SU7 vs 小米YU7 对比日报 报告范围：车型：小米SU7、小米YU7；对比：小米SU7、小米YU7；筛选：body_type:轿车 报告摘要：原报告标题：小米SU7 vs 小米YU7 对比日报 原报告日期：2026-07-07 原报告类型：compare 原始任务：小米SU7 vs 小米YU7 对比日报 \n新的补充要求：?????????????\n请延续原报告上下文生成新的受控日报任务，不要脱离上述日期和对象。"
+      },
+      "summary": {
+        "excerpt": "原报告标题：车型对比报告 - 2026-07-07 原报告日期：2026-07-07 原报告类型：compare 原始任务：基于已生成报告继续分析。 原报告标题：车型对比报告 - 2026-07-07 原报告日期：2026-07-07 原报告类型：compare 原始任务：小米SU7 vs 小米YU7 对比日报 报告范围：车型：小米SU7、小米YU7；对比：小米SU7、小米YU7；筛选：body_type:轿车",
+        "word_count": 1253
+      },
+      "task": {
+        "action": "run",
+        "report_type": "compare",
+        "date": "2026-07-07",
+        "brand": null,
+        "series": null,
+        "compare_series": [
+          "小米YU7",
+          "小米SU7"
+        ],
+        "filters": {
+          "body_type": "轿车"
+        },
+        "focus": [
+          "小米YU7",
+          "小米SU7"
+        ],
+        "output_name": null,
+        "source_prompt": "基于已生成报告继续分析。\n原报告标题：车型对比报告 - 2026-07-07\n原报告日期：2026-07-07\n原报告类型：compare\n原始任务：基于已生成报告继续分析。\n原报告标题：车型对比报告 - 2026-07-07\n原报告日期：2026-07-07\n原报告类型：compare\n原始任务：小米SU7 vs 小米YU7 对比日报\n报告范围：车型：小米SU7、小米YU7；对比：小米SU7、小米YU7；筛选：body_type:轿车\n报告摘要：原报告标题：小米SU7 vs 小米YU7 对比日报 原报告日期：2026-07-07 原报告类型：compare 原始任务：小米SU7 vs 小米YU7 对比日报 报告范围：无 报告摘要：**日期：** 2026-07-07 **品牌：** 小米汽车 **对比车系：** 小米SU7（轿车） vs 小米YU7（SUV） 新的补充要求：????????????? 请延续原报告上下文生成新的受控日报任务，不要脱离上述日期和对象。\n新的补充要求：?????????????\n请延续原报告上下文生成新的受控日报任务，不要脱离上述日期和对象。\n报告范围：车型：小米SU7、小米YU7；对比：小米SU7、小米YU7；筛选：body_type:轿车\n报告摘要：原报告标题：车型对比报告 - 2026-07-07 原报告日期：2026-07-07 原报告类型：compare 原始任务：小米SU7 vs 小米YU7 对比日报 报告范围：车型：小米SU7、小米YU7；对比：小米SU7、小米YU7；筛选：body_type:轿车 报告摘要：原报告标题：小米SU7 vs 小米YU7 对比日报 原报告日期：2026-07-07 原报告类型：compare 原始任务：小米SU7 vs 小米YU7 对比日报 \n新的补充要求：?????????????\n请延续原报告上下文生成新的受控日报任务，不要脱离上述日期和对象。",
+        "clarifying_question": null,
+        "workflow_notes": [],
+        "risk_notes": []
+      }
+    },
+    {
+      "report_id": "rpt_2026-07-07_compare_compare-su7-vs-yu7-2026-07-07-followup-184544",
+      "file_name": "compare-su7-vs-yu7-2026-07-07-followup-184544.md",
+      "file_path": "output/compare-su7-vs-yu7-2026-07-07-followup-184544.md",
+      "report_type": "compare",
+      "date": "2026-07-07",
+      "title": "车型对比报告 - 2026-07-07",
+      "status": "active",
+      "deleted_at": null,
+      "archived_reason": null,
+      "created_at": "2026-07-07T18:45:44+08:00",
+      "updated_at": "2026-07-08T13:14:56+08:00",
+      "file_mtime": "2026-07-07T18:45:44+08:00",
+      "source": {
+        "entry": "workflow_server",
+        "job_id": "job-20260707-184544-6abdb0",
+        "generator": "dynamic_report_generator",
+        "llm_used": false
+      },
+      "scope": {
+        "brands": [],
+        "series": [
+          "小米SU7",
+          "小米YU7"
+        ],
+        "comparison_pairs": [
+          "小米SU7",
+          "小米YU7"
+        ],
+        "filters": [
+          "body_type:轿车"
+        ]
+      },
+      "conversation": {
+        "continuable": true,
+        "last_followup_at": "2026-07-08T10:07:23+08:00",
+        "followup_count": 1,
+        "base_prompt": "基于已生成报告继续分析。\n原报告标题：车型对比报告 - 2026-07-07\n原报告日期：2026-07-07\n原报告类型：compare\n原始任务：小米SU7 vs 小米YU7 对比日报\n报告范围：车型：小米SU7、小米YU7；对比：小米SU7、小米YU7；筛选：body_type:轿车\n报告摘要：原报告标题：小米SU7 vs 小米YU7 对比日报 原报告日期：2026-07-07 原报告类型：compare 原始任务：小米SU7 vs 小米YU7 对比日报 报告范围：无 报告摘要：**日期：** 2026-07-07 **品牌：** 小米汽车 **对比车系：** 小米SU7（轿车） vs 小米YU7（SUV） 新的补充要求：????????????? 请延续原报告上下文生成新的受控日报任务，不要脱离上述日期和对象。\n新的补充要求：?????????????\n请延续原报告上下文生成新的受控日报任务，不要脱离上述日期和对象。"
+      },
+      "summary": {
+        "excerpt": "原报告标题：车型对比报告 - 2026-07-07 原报告日期：2026-07-07 原报告类型：compare 原始任务：小米SU7 vs 小米YU7 对比日报 报告范围：车型：小米SU7、小米YU7；对比：小米SU7、小米YU7；筛选：body_type:轿车 报告摘要：原报告标题：小米SU7 vs 小米YU7 对比日报 原报告日期：2026-07-07 原报告类型：compare 原始任务：小米SU7 vs 小米YU7 对比日报 ",
+        "word_count": 847
+      },
+      "task": {
+        "action": "run",
+        "report_type": "compare",
+        "date": "2026-07-07",
+        "brand": null,
+        "series": null,
+        "compare_series": [
+          "小米SU7",
+          "小米YU7"
+        ],
+        "filters": {
+          "body_type": "轿车"
+        },
+        "focus": [
+          "小米SU7",
+          "小米YU7"
+        ],
+        "output_name": null,
+        "source_prompt": "基于已生成报告继续分析。\n原报告标题：车型对比报告 - 2026-07-07\n原报告日期：2026-07-07\n原报告类型：compare\n原始任务：小米SU7 vs 小米YU7 对比日报\n报告范围：车型：小米SU7、小米YU7；对比：小米SU7、小米YU7；筛选：body_type:轿车\n报告摘要：原报告标题：小米SU7 vs 小米YU7 对比日报 原报告日期：2026-07-07 原报告类型：compare 原始任务：小米SU7 vs 小米YU7 对比日报 报告范围：无 报告摘要：**日期：** 2026-07-07 **品牌：** 小米汽车 **对比车系：** 小米SU7（轿车） vs 小米YU7（SUV） 新的补充要求：????????????? 请延续原报告上下文生成新的受控日报任务，不要脱离上述日期和对象。\n新的补充要求：?????????????\n请延续原报告上下文生成新的受控日报任务，不要脱离上述日期和对象。",
+        "clarifying_question": null,
+        "workflow_notes": [],
+        "risk_notes": []
+      }
+    },
+    {
+      "report_id": "rpt_2026-07-07_brand_brand-byd-2026-07-07",
+      "file_name": "brand-byd-2026-07-07.md",
+      "file_path": "output/brand-byd-2026-07-07.md",
+      "report_type": "brand",
+      "date": "2026-07-07",
+      "title": "车型表现",
+      "status": "active",
+      "deleted_at": null,
+      "archived_reason": null,
+      "created_at": "2026-07-07T18:42:19+08:00",
+      "updated_at": "2026-07-08T13:14:56+08:00",
+      "file_mtime": "2026-07-07T17:27:05+08:00",
+      "source": {
+        "entry": "workflow_server",
+        "job_id": null,
+        "generator": "dynamic_report_generator",
+        "llm_used": false
+      },
+      "scope": {
+        "brands": [],
+        "series": [],
+        "comparison_pairs": [],
+        "filters": []
+      },
+      "conversation": {
+        "continuable": true,
+        "last_followup_at": null,
+        "followup_count": 0,
+        "base_prompt": "车型表现"
+      },
+      "summary": {
+        "excerpt": "样本内共有 42 款车型。主力车型是 元UP，销量 17,043，价格区间 6.98-10.48万。 | 排名 | 车型 | 品牌 | 销量 | 价格区间 | 能源 | 车身 | |---:|---|---|---:|---|---|---| | 1 | 元UP | 比亚迪 | 17,043 | 6.98-10.48万 | 纯电动 | SUV | | 2 | 宋Pro DM | 比亚迪 | 15,497 | 9.78-12.99万 | ",
+        "word_count": 984
+      },
+      "task": null
+    },
+    {
+      "report_id": "rpt_2026-07-07_series_series-su7-2026-07-07",
+      "file_name": "series-su7-2026-07-07.md",
+      "file_path": "output/series-su7-2026-07-07.md",
+      "report_type": "series",
+      "date": "2026-07-07",
+      "title": "同品牌车型对比",
+      "status": "active",
+      "deleted_at": null,
+      "archived_reason": null,
+      "created_at": "2026-07-07T18:42:19+08:00",
+      "updated_at": "2026-07-08T13:14:56+08:00",
+      "file_mtime": "2026-07-07T15:57:49+08:00",
+      "source": {
+        "entry": "workflow_server",
+        "job_id": null,
+        "generator": "dynamic_report_generator",
+        "llm_used": false
+      },
+      "scope": {
+        "brands": [],
+        "series": [],
+        "comparison_pairs": [],
+        "filters": []
+      },
+      "conversation": {
+        "continuable": true,
+        "last_followup_at": null,
+        "followup_count": 0,
+        "base_prompt": "同品牌车型对比"
+      },
+      "summary": {
+        "excerpt": "- **车型名称**：小米SU7 - **品牌**：小米汽车 - **价格区间**：21.99-30.39万 - **能源类型**：纯电动 - **车身类型**：轿车 - **本月销量**：24,023辆 - **销量排名**：第1名（较上月持平） - **配置数据**：已获取补充配置，但未通过车型匹配校验，已跳过，不可引用具体配置细节。 小米汽车目前有两款在售车系： | 车型 | 价格区间 | 销量 | 排名 | 能源类型 | 车身类",
+        "word_count": 1983
+      },
+      "task": null
+    },
+    {
+      "report_id": "rpt_2026-07-07_series_series-p7-2026-07-07",
+      "file_name": "series-p7-2026-07-07.md",
+      "file_path": "output/series-p7-2026-07-07.md",
+      "report_type": "series",
+      "date": "2026-07-07",
+      "title": "核心摘要",
+      "status": "active",
+      "deleted_at": null,
+      "archived_reason": null,
+      "created_at": "2026-07-07T18:42:19+08:00",
+      "updated_at": "2026-07-08T13:14:56+08:00",
+      "file_mtime": "2026-07-07T15:54:42+08:00",
+      "source": {
+        "entry": "workflow_server",
+        "job_id": null,
+        "generator": "dynamic_report_generator",
+        "llm_used": false
+      },
+      "scope": {
+        "brands": [],
+        "series": [],
+        "comparison_pairs": [],
+        "filters": []
+      },
+      "conversation": {
+        "continuable": true,
+        "last_followup_at": null,
+        "followup_count": 0,
+        "base_prompt": "核心摘要"
+      },
+      "summary": {
+        "excerpt": "好的，根据您的要求和数据输入，以下是关于小鹏P7的车型报告。 *** 小鹏P7作为品牌旗下定位中高端的纯电动轿车，当前售价为20.38-30.18万元。在2026年7月的统计周期内，P7销量为1,896辆，品牌内部排名第4，较上期上升1位。其市场表现受到同品牌新车型小鹏P7+的竞争，同时也面临小米SU7、传统豪华品牌燃油车（如宝马3系、奔驰C级）等多方压力。在20-30万元价格带，市场竞争异常激烈。",
+        "word_count": 2776
+      },
+      "task": null
+    },
+    {
+      "report_id": "rpt_2026-07-07_filtered_filtered-models-2026-07-07",
+      "file_name": "filtered-models-2026-07-07.md",
+      "file_path": "output/filtered-models-2026-07-07.md",
+      "report_type": "filtered",
+      "date": "2026-07-07",
+      "title": "新能源购买建议 - 2026-07-07",
+      "status": "active",
+      "deleted_at": null,
+      "archived_reason": null,
+      "created_at": "2026-07-07T18:42:19+08:00",
+      "updated_at": "2026-07-08T13:14:56+08:00",
+      "file_mtime": "2026-07-07T14:46:54+08:00",
+      "source": {
+        "entry": "workflow_server",
+        "job_id": null,
+        "generator": "dynamic_report_generator",
+        "llm_used": false
+      },
+      "scope": {
+        "brands": [],
+        "series": [],
+        "comparison_pairs": [],
+        "filters": [
+          "models",
+          "2026",
+          "07"
+        ]
+      },
+      "conversation": {
+        "continuable": true,
+        "last_followup_at": null,
+        "followup_count": 0,
+        "base_prompt": "新能源购买建议 - 2026-07-07"
+      },
+      "summary": {
+        "excerpt": "共筛选出 72 款车型。排序按销量从高到低。 前 15 款中有 0 款命中可信补充配置。 | 排名 | 车型 | 品牌 | 销量 | 价格区间 | 能源 | 车身 | |---:|---|---|---:|---|---|---| | 1 | 小米SU7 | 小米汽车 | 24,023 | 21.99-30.39万 | 纯电动 | 轿车 | | 2 | 理想i6 | 理想汽车 | 20,878 | 24.98-26.98万 | 纯电动 ",
+        "word_count": 1114
+      },
+      "task": null
+    },
+    {
+      "report_id": "rpt_2026-07-07_filtered_filtered-suv-20.0-2026-07-07",
+      "file_name": "filtered-suv-20.0-2026-07-07.md",
+      "file_path": "output/filtered-suv-20.0-2026-07-07.md",
+      "report_type": "filtered",
+      "date": "2026-07-07",
+      "title": "SUV 20.0万以内购买建议 - 2026-07-07",
+      "status": "active",
+      "deleted_at": null,
+      "archived_reason": null,
+      "created_at": "2026-07-07T18:42:19+08:00",
+      "updated_at": "2026-07-08T13:14:56+08:00",
+      "file_mtime": "2026-07-07T11:44:16+08:00",
+      "source": {
+        "entry": "workflow_server",
+        "job_id": null,
+        "generator": "dynamic_report_generator",
+        "llm_used": false
+      },
+      "scope": {
+        "brands": [],
+        "series": [],
+        "comparison_pairs": [],
+        "filters": [
+          "suv",
+          "20.0",
+          "2026",
+          "07"
+        ]
+      },
+      "conversation": {
+        "continuable": true,
+        "last_followup_at": null,
+        "followup_count": 0,
+        "base_prompt": "SUV 20.0万以内购买建议 - 2026-07-07"
+      },
+      "summary": {
+        "excerpt": "共筛选出 63 款车型。排序按销量从高到低。 前 15 款中有 0 款命中可信补充配置。 | 排名 | 车型 | 品牌 | 销量 | 价格区间 | 能源 | 车身 | |---:|---|---|---:|---|---|---| | 1 | 元UP | 比亚迪 | 17,043 | 6.98-10.48万 | 纯电动 | SUV | | 2 | 宋Pro DM | 比亚迪 | 15,497 | 9.78-12.99万 | 插混/增程 ",
+        "word_count": 1105
+      },
+      "task": null
+    },
+    {
+      "report_id": "rpt_2026-07-06_market_2026-07-06",
+      "file_name": "2026-07-06.md",
+      "file_path": "output/2026-07-06.md",
+      "report_type": "market",
+      "date": "2026-07-06",
+      "title": "销量前十",
+      "status": "active",
+      "deleted_at": null,
+      "archived_reason": null,
+      "created_at": "2026-07-07T18:42:19+08:00",
+      "updated_at": "2026-07-08T13:14:56+08:00",
+      "file_mtime": "2026-07-06T16:18:51+08:00",
+      "source": {
+        "entry": "workflow_server",
+        "job_id": null,
+        "generator": "dynamic_report_generator",
+        "llm_used": false
+      },
+      "scope": {
+        "brands": [],
+        "series": [],
+        "comparison_pairs": [],
+        "filters": []
+      },
+      "conversation": {
+        "continuable": true,
+        "last_followup_at": null,
+        "followup_count": 0,
+        "base_prompt": "销量前十"
+      },
+      "summary": {
+        "excerpt": "今日监测 172 款车型，新能源车型 72 款，占比 41.9%。 车型结构为轿车 64 款、SUV 94 款、MPV 9 款。 | 排名 | 车型 | 品牌 | 销量 | 价格区间 | 能源 | 车身 | |---:|---|---|---:|---|---|---| | 1 | 小米SU7 | 小米汽车 | 24,023 | 21.99-30.39万 | 纯电动 | 轿车 |",
+        "word_count": 851
+      },
+      "task": null
+    },
+    {
+      "report_id": "rpt_2026-07-06_brand_brand-xpeng-2026-07-06",
+      "file_name": "brand-xpeng-2026-07-06.md",
+      "file_path": "output/brand-xpeng-2026-07-06.md",
+      "report_type": "brand",
+      "date": "2026-07-06",
+      "title": "车型表现",
+      "status": "active",
+      "deleted_at": null,
+      "archived_reason": null,
+      "created_at": "2026-07-07T18:42:19+08:00",
+      "updated_at": "2026-07-08T13:14:56+08:00",
+      "file_mtime": "2026-07-06T16:18:30+08:00",
+      "source": {
+        "entry": "workflow_server",
+        "job_id": null,
+        "generator": "dynamic_report_generator",
+        "llm_used": false
+      },
+      "scope": {
+        "brands": [],
+        "series": [],
+        "comparison_pairs": [],
+        "filters": []
+      },
+      "conversation": {
+        "continuable": true,
+        "last_followup_at": null,
+        "followup_count": 0,
+        "base_prompt": "车型表现"
+      },
+      "summary": {
+        "excerpt": "样本内共有 8 款车型。主力车型是 小鹏MONA M03，销量 14,160，价格区间 11.98-15.18万。 | 排名 | 车型 | 品牌 | 销量 | 价格区间 | 能源 | 车身 | |---:|---|---|---:|---|---|---| | 1 | 小鹏MONA M03 | 小鹏汽车 | 14,160 | 11.98-15.18万 | 纯电动 | 轿车 |",
+        "word_count": 736
+      },
+      "task": null
+    },
+    {
+      "report_id": "rpt_2026-07-06_series_series-su7-2026-07-06",
+      "file_name": "series-su7-2026-07-06.md",
+      "file_path": "output/series-su7-2026-07-06.md",
+      "report_type": "series",
+      "date": "2026-07-06",
+      "title": "同品牌参考",
+      "status": "active",
+      "deleted_at": null,
+      "archived_reason": null,
+      "created_at": "2026-07-07T18:42:19+08:00",
+      "updated_at": "2026-07-08T13:14:56+08:00",
+      "file_mtime": "2026-07-06T14:40:02+08:00",
+      "source": {
+        "entry": "workflow_server",
+        "job_id": null,
+        "generator": "dynamic_report_generator",
+        "llm_used": false
+      },
+      "scope": {
+        "brands": [],
+        "series": [],
+        "comparison_pairs": [],
+        "filters": []
+      },
+      "conversation": {
+        "continuable": true,
+        "last_followup_at": null,
+        "followup_count": 0,
+        "base_prompt": "同品牌参考"
+      },
+      "summary": {
+        "excerpt": "小米SU7 属于 小米汽车，价格区间 21.99-30.39万，能源类型 纯电动，车身类型 轿车，销量 24,023。 | 排名 | 车型 | 品牌 | 销量 | 价格区间 | 能源 | 车身 | |---:|---|---|---:|---|---|---| | 1 | 小米SU7 | 小米汽车 | 24,023 | 21.99-30.39万 | 纯电动 | 轿车 |",
+        "word_count": 954
+      },
+      "task": null
+    },
+    {
+      "report_id": "rpt_2026-07-06_filtered_filtered-suv-2026-07-06",
+      "file_name": "filtered-suv-2026-07-06.md",
+      "file_path": "output/filtered-suv-2026-07-06.md",
+      "report_type": "filtered",
+      "date": "2026-07-06",
+      "title": "SUV购买建议 - 2026-07-06",
+      "status": "active",
+      "deleted_at": null,
+      "archived_reason": null,
+      "created_at": "2026-07-07T18:42:19+08:00",
+      "updated_at": "2026-07-08T13:14:56+08:00",
+      "file_mtime": "2026-07-06T10:27:57+08:00",
+      "source": {
+        "entry": "workflow_server",
+        "job_id": null,
+        "generator": "dynamic_report_generator",
+        "llm_used": false
+      },
+      "scope": {
+        "brands": [],
+        "series": [],
+        "comparison_pairs": [],
+        "filters": [
+          "suv",
+          "2026",
+          "07"
+        ]
+      },
+      "conversation": {
+        "continuable": true,
+        "last_followup_at": null,
+        "followup_count": 0,
+        "base_prompt": "SUV购买建议 - 2026-07-06"
+      },
+      "summary": {
+        "excerpt": "共筛选出 56 款车型。排序按销量从高到低。 | 排名 | 车型 | 品牌 | 销量 | 价格区间 | 能源 | 车身 | |---:|---|---|---:|---|---|---| | 1 | 理想i6 | 理想汽车 | 20,878 | 24.98-26.98万 | 纯电动 | SUV | | 2 | 元UP | 比亚迪 | 17,043 | 6.98-10.48万 | 纯电动 | SUV |",
+        "word_count": 1075
+      },
+      "task": null
+    },
+    {
+      "report_id": "rpt_2026-07-06_series_series-mona-m03-2026-07-06",
+      "file_name": "series-mona-m03-2026-07-06.md",
+      "file_path": "output/series-mona-m03-2026-07-06.md",
+      "report_type": "series",
+      "date": "2026-07-06",
+      "title": "同品牌参考",
+      "status": "active",
+      "deleted_at": null,
+      "archived_reason": null,
+      "created_at": "2026-07-07T18:42:19+08:00",
+      "updated_at": "2026-07-08T13:14:56+08:00",
+      "file_mtime": "2026-07-06T10:20:10+08:00",
+      "source": {
+        "entry": "workflow_server",
+        "job_id": null,
+        "generator": "dynamic_report_generator",
+        "llm_used": false
+      },
+      "scope": {
+        "brands": [],
+        "series": [],
+        "comparison_pairs": [],
+        "filters": []
+      },
+      "conversation": {
+        "continuable": true,
+        "last_followup_at": null,
+        "followup_count": 0,
+        "base_prompt": "同品牌参考"
+      },
+      "summary": {
+        "excerpt": "小鹏MONA M03 属于 小鹏汽车，价格区间 11.98-15.18万，能源类型 纯电动，车身类型 轿车，销量 14,160。 | 排名 | 车型 | 品牌 | 销量 | 价格区间 | 能源 | 车身 | |---:|---|---|---:|---|---|---| | 1 | 小鹏MONA M03 | 小鹏汽车 | 14,160 | 11.98-15.18万 | 纯电动 | 轿车 |",
+        "word_count": 1263
+      },
+      "task": null
+    },
+    {
+      "report_id": "rpt_2026-07-03_market_2026-07-03",
+      "file_name": "2026-07-03.md",
+      "file_path": "output/2026-07-03.md",
+      "report_type": "market",
+      "date": "2026-07-03",
+      "title": "比亚迪",
+      "status": "active",
+      "deleted_at": null,
+      "archived_reason": null,
+      "created_at": "2026-07-07T18:42:19+08:00",
+      "updated_at": "2026-07-08T13:14:56+08:00",
+      "file_mtime": "2026-07-03T17:02:57+08:00",
+      "source": {
+        "entry": "workflow_server",
+        "job_id": null,
+        "generator": "dynamic_report_generator",
+        "llm_used": false
+      },
+      "scope": {
+        "brands": [],
+        "series": [],
+        "comparison_pairs": [],
+        "filters": []
+      },
+      "conversation": {
+        "continuable": true,
+        "last_followup_at": null,
+        "followup_count": 0,
+        "base_prompt": "比亚迪"
+      },
+      "summary": {
+        "excerpt": "今日监测车型总数为172款，其中新能源车型72款，占比41.9%。新能源车型数量持续增长，市场接受度不断提升。 主力价格段主要集中在10-20万元区间，该价格段覆盖了多数家庭用车需求。销量TOP5车型分别为小米SU7、理想i6、元UP、宋Pro DM和海狮06EV，月销量均在1万辆以上。 本月市场整体呈平稳态势，没有明显的涨跌趋势。 本月比亚迪销量排名第二，较上月上升一位。主力车型为元UP、宋Pro DM和海狮06EV，均为纯电动车型，",
+        "word_count": 1529
+      },
+      "task": null
+    },
+    {
+      "report_id": "rpt_2026-07-02_market_2026-07-02",
+      "file_name": "2026-07-02.md",
+      "file_path": "output/2026-07-02.md",
+      "report_type": "market",
+      "date": "2026-07-02",
+      "title": "一、市场概览",
+      "status": "active",
+      "deleted_at": null,
+      "archived_reason": null,
+      "created_at": "2026-07-07T18:42:19+08:00",
+      "updated_at": "2026-07-08T13:14:56+08:00",
+      "file_mtime": "2026-07-03T14:57:59+08:00",
+      "source": {
+        "entry": "workflow_server",
+        "job_id": null,
+        "generator": "dynamic_report_generator",
+        "llm_used": false
+      },
+      "scope": {
+        "brands": [],
+        "series": [],
+        "comparison_pairs": [],
+        "filters": []
+      },
+      "conversation": {
+        "continuable": true,
+        "last_followup_at": null,
+        "followup_count": 0,
+        "base_prompt": "一、市场概览"
+      },
+      "summary": {
+        "excerpt": "今日汽车市场监测车型总数为172款，其中新能源车型数量为72款，占比达到41.9%。新能源车型在市场中的地位日益重要，显示出消费者对环保和节能车型的青睐。 主力价格段集中在10-20万元区间，这一价格段的车型销量占比最高，表明该价格区间是市场的主力消费人群。 销量TOP 5车型分别为小米SU7、理想i6、比亚迪元UP、比亚迪宋Pro DM和比亚迪海狮06EV，月销量均超过1万辆。",
+        "word_count": 1621
+      },
+      "task": null
+    }
+  ]
+}

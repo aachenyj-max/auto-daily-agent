@@ -4,6 +4,10 @@
 
 本仓库是一个基于 Python 脚本的汽车日报 agent。核心流程位于 `tools/`：`scraper.py` 抓取 API 数据，`processor.py` 清洗并结构化数据，`enrich.py` 补充车型详情页信息，`report_generator.py` 生成日报，`validate.py` 校验产物。配置文件放在 `config/`，重点包括 `settings.yaml`、`brands.json` 和 `report_prompt.txt`。原始数据按日期保存到 `data/raw/`，处理后数据保存到 `data/processed/`，补充抓取的中间结果使用对应的 `enriched/` 子目录。最终日报输出到 `output/YYYY-MM-DD.md`。运行日志、调试页面和截图放在 `logs/`。本地可复用技能放在 `skills/`。本地前端查看器放在 `frontend/`，规划和进度文档放在 `docs/` 与 `progress.md`。
 
+各一级目录的 `README.md` 是后续 agent 的快速索引。进入 `tools/`、`skills/`、`config/`、`data/`、`output/`、`frontend/` 或 `docs/` 前，应先阅读对应目录 README，再决定是否打开具体文件，避免无目的扫描大目录。
+
+开发期间必须维护连续上下文：开始处理需求后，在 `progress.md` 记录当前目标、关键判断、进行中的步骤和待办；开发完成后，再记录完成内容、验证命令、产物路径和剩余风险，避免中断后下次 agent 不知道从何继续。`progress.md` 只用于开发计划和开发完成记录；工作台或后台 agent 的运行类记录应写入 `docs/runtime-task-log.md`，不要继续把大量 `Backend Agent Task Start/Complete` 一类内容追加到 `progress.md`。每次修改代码、配置、数据约定、入口脚本或目录职责时，都要同步检查并按需更新 `AGENTS.md`、根 `README.md`、`progress.md` 以及受影响一级目录的 `README.md`。每次运行或接手任务时，先阅读 `AGENTS.md`、根 `README.md`、`progress.md`，进入具体目录前再读该目录 `README.md`，不要直接全量扫描大目录浪费 token。
+
 ## 构建、测试与开发命令
 
 在仓库根目录运行以下命令：
@@ -64,17 +68,27 @@ python tools\workflow_server.py
 访问地址：
 
 ```text
-http://127.0.0.1:8080/frontend/
+http://127.0.0.1:8000/frontend/
 ```
 
 相关模块：
 - `tools/intent_parser.py`：将自然语言需求解析成白名单报告任务。
-- `tools/dynamic_report_generator.py`：根据结构化数据生成市场、品牌、车型、对比和筛选报告。
+- `tools/dynamic_report_generator.py`：根据结构化数据生成市场、品牌、车型、对比和筛选报告；勾选 LLM 时会优先使用 OpenAI 兼容接口生成正文，失败时回退规则模板。
 - `tools/workflow_runner.py`：编排抓取、清洗、补充、生成和校验。
 - `tools/workflow_server.py`：为前端提供本地 API 与 job 状态查询。
+- `tools/agent_runner.py` / `tools/tool_registry.py` / `tools/agent_core.py`：受控后台 agent 主链路。只允许在注册表内按阶段执行 `read_context -> inspect_request -> inspect_data/prepare_data -> build_context -> generate_report -> validate_report -> quality_check`，并把执行轨迹写入 `agent_trace`。
 
 安全约束：
 - 不要把 API Key、Cookie、手机号、会话信息或本地私密路径提交到仓库。
-- LLM Key 优先使用 `LLM_API_KEY` 环境变量，或在网页临时输入，仅用于本次请求。
+- LLM Key 分为 `WORKFLOW_LLM_*` 和 `REPORT_LLM_*` 两套配置，优先使用环境变量或私有本地配置；前端不得显示、保存或传输 API Key。
+- 私有本地配置可用仓库根目录 `.env.local` 或 `config/local.yaml`，二者必须保持忽略状态，不得提交真实 Key。
 - 前端不得保存 API Key 到 `localStorage`，不得直接执行任意 Python/Shell。
 - 后端只能执行白名单工作流，不接受任意命令或任意文件路径。
+- `data/processed/enriched/YYYY-MM-DD.json` 中的车型配置必须通过车型名或版本名匹配校验后才可进入报告；未通过校验时只能提示“补充配置数据不可信/已跳过”。
+- `processor.py` 应保留品牌下全量车型，报告层按需要限制展示数量，不要在清洗阶段截断为 TOP10。
+- 修改一级目录职责、入口脚本或数据约定时，同步更新该目录的 `README.md`。
+- 工作流解析大模型系统提示词位于 `config/workflow_prompt.md`；动态网页报告正文大模型系统提示词位于 `config/report_agent_prompt.md`。修改解析规则、仓库规则、数据可信度约束或报告写作要求时同步更新对应文件。
+- 前端通过 `/api/llm/status` 展示 `workflow` 和 `report` 两套大模型配置状态。工作流任务支持 `action=run|ask|refuse`：`ask` 映射为 job 状态 `needs_input`，`refuse` 映射为 `refused`；job 结果中的 `workflow_notes`、`risk_notes`、`generation.llm_used` 和 `generation.llm_fallback_reason` 用于判断默认策略、风险降级和是否真实使用正文 LLM。
+- 开发记录必须落到 `progress.md`：需求开始时记录计划和上下文，完成时记录改动、验证和未解决事项。
+- 运行记录必须落到 `docs/runtime-task-log.md`：仅记录实际执行过的工作台/后台 agent 任务结果、输出文件、质量状态和简要风险。
+- 后续每次任务启动时先读 `AGENTS.md`、`README.md`、`progress.md` 和目标目录 README，再决定打开哪些具体文件。

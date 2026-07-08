@@ -33,6 +33,11 @@ const ReportViewer = (() => {
     return loadReportFile(`${dateStr}.md`, dateStr);
   }
 
+  async function loadReportRecord(record) {
+    if (!record || !record.file_name) return false;
+    return loadReportFile(record.file_name, record.date || null);
+  }
+
   async function loadReportFile(fileName, dateStr = null) {
     currentDate = dateStr || extractDate(fileName);
     currentFile = fileName;
@@ -53,7 +58,7 @@ const ReportViewer = (() => {
           renderHtml(currentHtml);
           updateSummary({ date: currentDate, fileName, size: currentMarkdown.length });
           setStatus(`已加载 ${fileName}`, 'info');
-          footerInfo.textContent = `${fileName} · ${currentMarkdown.length} 字符`;
+          footerInfo.textContent = `${fileName} | ${currentMarkdown.length} 字符`;
           return true;
         }
         if (resp.status === 404) notFound = true;
@@ -66,9 +71,9 @@ const ReportViewer = (() => {
     currentHtml = '';
     if (notFound) {
       setStatus(`未找到 ${fileName}`, 'warning');
-      showPlaceholder(`未找到 <code>${escapeHtml(fileName)}</code>，请确认 output/ 目录中是否存在该文件。`);
+      showPlaceholder(`未找到 <code>${escapeHtml(fileName)}</code>，请确认 output/ 中存在该文件。`);
     } else {
-      setStatus('加载失败，请确认本地服务已启动', 'error');
+      setStatus('加载失败，请确认本地服务已启动。', 'error');
       showPlaceholder('无法加载报告。请使用 <code>python tools/workflow_server.py</code> 启动本地服务。');
     }
     footerInfo.textContent = '加载失败';
@@ -123,6 +128,7 @@ const ReportViewer = (() => {
   return {
     loadReport,
     loadReportFile,
+    loadReportRecord,
     search,
     get currentDate() { return currentDate; },
     get currentFile() { return currentFile; },

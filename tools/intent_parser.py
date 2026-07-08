@@ -12,8 +12,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-import requests
-import yaml
+from llm_client import chat_completion, load_yaml_file
 
 
 PROJECT_ROOT = Path(__file__).parent.parent
@@ -21,10 +20,12 @@ CONFIG_DIR = PROJECT_ROOT / "config"
 DATA_PROCESSED = PROJECT_ROOT / "data" / "processed"
 
 REPORT_TYPES = {"market", "brand", "series", "compare", "filtered"}
+TASK_ACTIONS = {"run", "ask", "refuse"}
 
 
 @dataclass
 class ReportTask:
+    action: str = "run"
     report_type: str = "market"
     date: str = field(default_factory=lambda: datetime.now().strftime("%Y-%m-%d"))
     brand: str | None = None
@@ -34,14 +35,38 @@ class ReportTask:
     focus: list[str] = field(default_factory=list)
     output_name: str | None = None
     source_prompt: str = ""
+    clarifying_question: str | None = None
+    workflow_notes: list[str] = field(default_factory=list)
+    risk_notes: list[str] = field(default_factory=list)
 
 
 def load_settings() -> dict[str, Any]:
-    file = CONFIG_DIR / "settings.yaml"
+    return load_yaml_file(CONFIG_DIR / "settings.yaml")
+
+
+def load_workflow_prompt() -> str:
+    file = CONFIG_DIR / "workflow_prompt.md"
     if not file.exists():
-        return {}
-    with open(file, "r", encoding="utf-8") as f:
-        return yaml.safe_load(f) or {}
+        return ""
+    return file.read_text(encoding="utf-8")
+
+
+def parse_minimal_settings(text: str) -> dict[str, Any]:
+    settings: dict[str, Any] = {}
+    current_section: str | None = None
+    for raw_line in text.splitlines():
+        line = raw_line.split("#", 1)[0].rstrip()
+        if not line.strip():
+            continue
+        if not line.startswith(" ") and line.endswith(":"):
+            current_section = line[:-1].strip()
+            settings[current_section] = {}
+            continue
+        if current_section and line.startswith("  ") and ":" in line:
+            key, value = line.strip().split(":", 1)
+            value = value.strip().strip('"').strip("'")
+            settings.setdefault(current_section, {})[key.strip()] = value
+    return settings
 
 
 def load_known_names(date: str | None = None) -> tuple[list[str], list[str]]:
@@ -145,9 +170,11 @@ def fallback_parse(prompt: str) -> ReportTask:
 
 def normalize_task(raw: dict[str, Any], prompt: str) -> ReportTask:
     fallback = fallback_parse(prompt)
+    action = raw.get("action") if raw.get("action") in TASK_ACTIONS else fallback.action
     report_type = raw.get("report_type") if raw.get("report_type") in REPORT_TYPES else fallback.report_type
     filters = raw.get("filters") if isinstance(raw.get("filters"), dict) else fallback.filters
     task = ReportTask(
+        action=action,
         report_type=report_type,
         date=raw.get("date") or fallback.date,
         brand=raw.get("brand") or fallback.brand,
@@ -157,19 +184,19 @@ def normalize_task(raw: dict[str, Any], prompt: str) -> ReportTask:
         focus=raw.get("focus") if isinstance(raw.get("focus"), list) else fallback.focus,
         output_name=raw.get("output_name"),
         source_prompt=prompt,
+        clarifying_question=raw.get("clarifying_question") if isinstance(raw.get("clarifying_question"), str) else None,
+        workflow_notes=raw.get("workflow_notes") if isinstance(raw.get("workflow_notes"), list) else [],
+        risk_notes=raw.get("risk_notes") if isinstance(raw.get("risk_notes"), list) else [],
     )
+    if task.report_type == "compare" and len(task.compare_series) < 2:
+        task.action = "ask"
+        task.clarifying_question = task.clarifying_question or "请补充另一个用于对比的车型。"
+        task.workflow_notes.append("对比报告至少需要两个车型，已暂停生成等待用户补充。")
     return task
 
 
 def parse_with_llm(prompt: str, settings: dict[str, Any], api_key: str | None = None) -> ReportTask | None:
-    llm = settings.get("llm", {})
-    key = api_key or os.getenv("LLM_API_KEY") or llm.get("api_key")
-    api_base = os.getenv("LLM_API_BASE") or llm.get("api_base")
-    model = os.getenv("LLM_MODEL") or llm.get("model")
-    if not key or not api_base or not model:
-        return None
-
-    system = (
+    system = load_workflow_prompt() or (
         "你是汽车报告任务解析器。只返回 JSON，不要解释。"
         "report_type 必须是 market、brand、series、compare、filtered 之一。"
         "不要返回 shell、代码或任意文件路径。"
@@ -187,24 +214,26 @@ def parse_with_llm(prompt: str, settings: dict[str, Any], api_key: str | None = 
             "focus": ["关注点"],
         },
     }
-    payload = {
-        "model": model,
-        "messages": [
+    user["schema"].update(
+        {
+            "action": "run|ask|refuse",
+            "clarifying_question": "需要用户确认的问题/null",
+            "workflow_notes": ["工作流说明"],
+            "risk_notes": ["风险或降级说明"],
+        }
+    )
+    try:
+        content = chat_completion(
+            [
             {"role": "system", "content": system},
             {"role": "user", "content": json.dumps(user, ensure_ascii=False)},
-        ],
-        "temperature": 0.1,
-        "max_tokens": 800,
-    }
-    try:
-        resp = requests.post(
-            f"{api_base.rstrip('/')}/chat/completions",
-            headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
-            json=payload,
+            ],
+            api_key=api_key,
+            profile="workflow",
+            temperature=0.1,
+            max_tokens=800,
             timeout=60,
         )
-        resp.raise_for_status()
-        content = resp.json()["choices"][0]["message"]["content"].strip()
         match = re.search(r"\{.*\}", content, re.S)
         raw = json.loads(match.group(0) if match else content)
         return normalize_task(raw, prompt)
