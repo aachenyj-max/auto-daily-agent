@@ -79,18 +79,48 @@
     </aside>
 
     <main class="content">
-      <section class="generate-panel" aria-label="生成报告">
-        <div class="generate-head">
+      <section class="agent-panel" aria-label="Agent 对话">
+        <div class="agent-head">
           <div>
-            <h2>生成任务</h2>
-            <p>输入你想要的报告，例如单车、品牌、对比或筛选建议。</p>
+            <h2>Agent 对话</h2>
+            <p id="agent-context">新任务模式</p>
           </div>
-          <button id="btn-generate" class="btn btn-primary" type="button">生成</button>
+          <div class="manage-actions">
+            <button id="btn-archive-current" class="btn btn-secondary" type="button">归档当前报告</button>
+            <button id="btn-restore-current" class="btn btn-secondary" type="button">恢复当前报告</button>
+          </div>
         </div>
-        <textarea id="generate-prompt" rows="3" placeholder="例如：生成今天小鹏汽车日报，重点分析 MONA M03"></textarea>
-        <div class="generate-options">
+
+        <div class="agent-meta-row">
           <span id="model-status" class="model-status">正在检查大模型状态</span>
+          <span id="selected-report-meta" class="agent-selected-report">未选中管理对象</span>
         </div>
+
+        <div class="chat-window">
+          <div class="chat-header">
+          <div>
+            <span class="chat-kicker">当前会话</span>
+            <strong id="chat-title">新任务</strong>
+          </div>
+          <div class="chat-actions">
+            <button id="btn-new-chat" class="btn btn-secondary btn-small" type="button">新对话</button>
+            <button id="btn-clear-chat" class="btn btn-secondary btn-small" type="button">清空当前对话</button>
+          </div>
+        </div>
+
+          <div id="agent-thread" class="agent-thread" aria-live="polite">
+            <div class="agent-message agent-message-assistant">
+              <span class="agent-message-role">Agent</span>
+              <div class="agent-message-body">输入新任务，或先在左侧选择一份报告后继续追问。</div>
+            </div>
+          </div>
+
+          <div class="agent-compose">
+            <textarea id="agent-input" rows="3" placeholder="例如：生成今天小鹏汽车日报，重点分析 MONA M03"></textarea>
+            <button id="btn-agent-send" class="btn btn-primary" type="button">发送</button>
+          </div>
+        </div>
+
         <div id="job-panel" class="job-panel" hidden>
           <div class="job-line">
             <span id="job-step">queued</span>
@@ -98,27 +128,6 @@
           </div>
           <div class="progress-track"><span id="job-progress"></span></div>
           <pre id="job-task" class="job-task"></pre>
-        </div>
-      </section>
-
-      <section class="manage-panel" aria-label="当前报告管理">
-        <div class="manage-head">
-          <div>
-            <h2>当前报告</h2>
-            <p id="selected-report-meta">未选中管理对象</p>
-          </div>
-          <div class="manage-actions">
-            <button id="btn-archive-current" class="btn btn-secondary" type="button">归档当前报告</button>
-            <button id="btn-restore-current" class="btn btn-secondary" type="button">恢复当前报告</button>
-          </div>
-        </div>
-        <div class="followup-box">
-          <label for="followup-input">继续交流</label>
-          <textarea id="followup-input" rows="2" placeholder="例如：基于这份报告，只看20万以内车型，再生成一个购买建议版"></textarea>
-          <div class="followup-actions">
-            <span id="followup-target">当前未绑定报告</span>
-            <button id="btn-followup" class="btn btn-primary" type="button">基于当前报告继续生成</button>
-          </div>
         </div>
       </section>
 

@@ -29,6 +29,9 @@ python tools\workflow_server.py
 ```
 
 Or use `start_workbench.cmd` from the repository root for a double-click local launch that also opens the browser.
+If hidden/background startup is flaky on a given Windows machine, use `run_workbench.bat` instead. It keeps the server in a visible console window so startup errors are not swallowed.
+If even that wrapper is unreliable, use `run_workbench_server.bat`. It simply runs `.venv\Scripts\python.exe tools\workflow_server.py` in the current console window and is the most direct local launch path.
+For persistent local use after Windows login, run `install_workbench_autostart.cmd` once. It installs a Startup shortcut that calls `start_workbench_background.cmd`, which keeps the backend listening without opening the browser.
 
 Open:
 

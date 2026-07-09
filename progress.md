@@ -184,6 +184,149 @@
 - Trace steps: 7
 - Risk notes: none
 
+## 2026-07-08 工作台后台自启动
+
+- 目标：避免每次访问 `http://127.0.0.1:8000/frontend/` 前都手动重启本地工作台服务。
+- 关键判断：
+  - `ERR_CONNECTION_REFUSED` 的根因不是前端页面，而是 `tools/workflow_server.py` 没有常驻监听 8000 端口。
+  - 直接把 `start_workbench.cmd` 放进系统启动项会在每次登录时自动打开浏览器，不适合作为后台自启动入口。
+- 本次改动：
+  - 新增 `start_workbench_background.cmd`，复用健康检查与隐藏启动逻辑，只负责静默拉起后端，不自动打开页面。
+  - 新增 `install_workbench_autostart.cmd` 与 `remove_workbench_autostart.cmd`，通过 Windows Startup 快捷方式安装或移除登录自启动。
+  - 更新 `README.md`、`frontend/README.md`、`tools/README.md` 和 `AGENTS.md`，补充后台常驻启动入口与约束。
+  - 修正 `start_workbench.cmd` 与 `start_workbench_background.cmd` 的后台启动实现，避免 PowerShell `Start-Process` 结合重定向参数时触发 `PATH` 冲突导致服务未实际启动。
+- 验证命令：
+  - `cmd /c start_workbench_background.cmd`
+  - `Invoke-WebRequest -Uri 'http://127.0.0.1:8000/api/llm/status' -UseBasicParsing`
+  - `cmd /c install_workbench_autostart.cmd`
+- 验证结果：
+  - 后台启动后，`/api/llm/status` 返回 `200`，确认本地 8000 端口已恢复监听。
+  - 已安装登录自启动快捷方式：`C:\Users\13204\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\AutoDailyWorkbench.lnk`
+- 剩余风险：
+  - 当前后台入口改为 `pythonw.exe` 静默启动；如果未来服务启动失败，排查时应优先在终端手动运行 `python tools\workflow_server.py` 查看即时报错。
+
+## 2026-07-08 可见控制台启动入口
+
+- 目标：提供一个用户可双击运行、并且能直接看到 Python 启动日志的 `.bat` 入口，规避隐藏后台启动失败时难排查的问题。
+- 关键判断：
+  - `workflow_server.py` 前台运行时能持续存活，问题主要集中在隐藏后台拉起方式。
+  - 对本地使用者而言，可见控制台比静默后台更稳，也更利于判断依赖、端口或导入错误。
+- 本次改动：
+  - 新增 `run_workbench.bat`，双击后在独立命令行窗口运行 `python.exe tools\workflow_server.py`，等待健康检查成功后自动打开 `http://127.0.0.1:8000/frontend/`。
+  - 新增 `run_workbench_server.bat`，在当前命令行窗口直接前台运行 `workflow_server.py`，作为最稳的双击入口兜底方案。
+  - 更新 `README.md`、`frontend/README.md` 和 `tools/README.md`，补充该双击入口的使用方式与适用场景。
+
+## 2026-07-08 进行中：工作台对话式任务入口
+
+- 目标：把上方生成任务和当前报告继续交流合并成一个对话式 agent 面板，让 `needs_input` 追问可以在同一个输入框里回答。
+- 关键判断：
+  - 当前前端有 `submitGenerate()` 和 `submitFollowup()` 两条入口，`needs_input` 只显示在进度栏，缺少回答追问的交互路径。
+  - 第一版优先不新增后端 API，由前端保存上一轮追问、原始输入和报告上下文，再把用户补充拼接成新的受控任务提交。
+- 计划：
+  - 重构 `frontend/index.html` 的生成区和继续交流区为统一 `agent-panel`。
+  - 重写 `frontend/src/main.js` 的提交逻辑，增加对话流渲染、追问状态和统一发送入口。
+  - 补充 `frontend/src/styles.css` 对话流样式，并更新前端说明文档。
+- 已完成：
+  - `frontend/index.html` 已将生成任务和当前报告继续交流合并为 `Agent 对话` 面板，保留当前报告归档/恢复按钮、大模型状态和任务进度栏。
+  - `frontend/src/main.js` 已新增统一发送入口：无选中报告时创建新任务，有选中报告时基于当前报告 follow-up，`needs_input` 时把下一条输入作为用户补充重新提交。
+  - 对话流会显示用户消息、Agent 接收提示、追问、失败/拒绝信息和生成结果文件名。
+  - `frontend/src/styles.css` 已补充对话流、消息气泡、上下文栏和移动端布局样式。
+  - `README.md` 与 `frontend/README.md` 已更新对话式任务入口说明。
+- 验证命令：
+  - `node --check frontend\src\main.js`
+  - `node --check frontend\src\report-viewer.js`
+  - `Invoke-WebRequest -Uri 'http://127.0.0.1:8000/api/llm/status' -UseBasicParsing`
+  - `Invoke-WebRequest -Uri 'http://127.0.0.1:8000/frontend/' -UseBasicParsing`
+- 验证结果：
+  - JS 语法检查通过。
+  - 本地工作台服务健康检查返回 200。
+  - `http://127.0.0.1:8000/frontend/` 返回 200 OK。
+- 剩余风险：
+  - 尚未在真实浏览器里手动完成一次 `needs_input -> 同输入框回答 -> 重新生成` 的完整点击链路；当前已完成前端状态机和静态/HTTP 验证。
+
+## 2026-07-08 进行中：按报告隔离的聊天窗口
+
+- 目标：将 `agent-thread` 与 `agent-input` 整合成完整聊天窗口，并让左侧点击不同日报时显示该日报独立的对话记录。
+- 关键判断：
+  - 当前对话流只存在当前 DOM 中，切换日报不会恢复对应上下文。
+  - 第一版先把会话记录按 `draft:new-task` 和 `report:<report_id>` 存在浏览器 `localStorage`，不改后端数据结构。
+- 计划：
+  - `frontend/index.html` 增加聊天窗口头部、会话标签和清空当前对话按钮。
+  - `frontend/src/main.js` 增加会话 key、localStorage 持久化、切换报告时重载会话、新任务生成成功后迁移草稿会话。
+  - `frontend/src/styles.css` 调整聊天窗口、滚动区和输入区样式。
+  - 更新 `frontend/README.md` 说明本地会话记录策略。
+- 已完成：
+  - `frontend/index.html` 已将 `agent-thread` 和 `agent-input` 包装为 `chat-window`，新增当前会话标题和清空当前对话按钮。
+  - `frontend/src/main.js` 已按 `draft:new-task` 与 `report:<report_id>` 保存/加载对话记录，点击左侧报告会切换到该报告的本地聊天记录。
+  - 新任务生成成功后，草稿会话会迁移到新生成报告的会话记录下。
+  - `frontend/src/styles.css` 已补充聊天窗口头部、滚动区、输入区和移动端样式。
+  - `frontend/README.md` 已说明对话记录当前保存在浏览器 `localStorage`。
+- 验证命令：
+  - `node --check frontend\src\main.js`
+  - `node --check frontend\src\report-viewer.js`
+  - `Invoke-WebRequest -Uri 'http://127.0.0.1:8000/frontend/' -UseBasicParsing`
+  - `Invoke-WebRequest -Uri 'http://127.0.0.1:8000/api/llm/status' -UseBasicParsing`
+- 验证结果：
+  - JS 语法检查通过。
+  - 旧控件引用扫描未发现残留。
+  - 本地页面与 LLM 状态接口均返回 200。
+- 剩余风险：
+  - 对话记录第一版仅存在当前浏览器 `localStorage`，不随仓库、报告文件或其他浏览器同步。
+  - 尚未用真实浏览器手动点选多个日报验证聊天记录切换的视觉细节。
+
+## 2026-07-08 进行中：新对话按钮
+
+- 目标：在聊天窗口中提供明确的新对话入口，避免选中日报后无法方便回到新任务草稿会话。
+- 计划：
+  - `frontend/index.html` 在聊天窗口头部增加“新对话”按钮。
+  - `frontend/src/main.js` 增加点击处理，切回 `draft:new-task` 并解除当前报告绑定。
+  - `frontend/src/styles.css` 调整按钮组布局。
+  - 更新 `frontend/README.md` 说明新对话入口。
+- 已完成：
+  - 聊天窗口头部新增“新对话”按钮。
+  - 点击后解除当前报告绑定，切回 `draft:new-task` 会话，并聚焦输入框。
+  - 已补充按钮组样式和前端 README 说明。
+
+## 2026-07-08 进行中：按任务类型生成开场白
+
+- 目标：让聊天窗口空会话开场白根据新任务、品牌、车型、对比、筛选、市场等类型变化，并在可用时用 LLM 生成更贴合报告的开场白。
+- 关键判断：
+  - 当前 `defaultConversationMessage()` 固定返回新任务开场白，导致点击不同报告时上下文提示不匹配。
+  - `tools/llm_client.py` 已提供 `chat_completion()`，后端可新增轻量 API，失败时回退规则模板。
+- 计划：
+  - 后端新增 `/api/reports/greeting`，根据报告 metadata 生成规则开场白，并可选调用 workflow LLM 优化。
+  - 前端增加规则开场白、开场白缓存和空会话异步刷新逻辑。
+  - 已有聊天记录时不覆盖历史消息，开场白只用于空会话。
+- 已完成：
+  - `tools/workflow_server.py` 新增 `POST /api/reports/greeting`，支持新任务规则开场白、报告类型规则开场白和 workflow LLM 增强。
+  - `frontend/src/main.js` 新增按 `report_type` 的规则开场白、`greetingCache` 和空会话异步刷新逻辑。
+  - 已有本地聊天记录时不会被开场白刷新覆盖。
+  - `frontend/README.md` 已补充开场白生成和回退策略。
+- 验证命令：
+  - `python -m py_compile tools\workflow_server.py tools\llm_client.py`
+  - `node --check frontend\src\main.js`
+  - `node --check frontend\src\report-viewer.js`
+  - `POST http://127.0.0.1:8000/api/reports/greeting`
+- 验证结果：
+  - Python 与 JS 静态检查通过。
+  - 重启本地工作台服务后，`/api/reports/greeting` 返回 200。
+  - 示例品牌报告返回了品牌类型规则开场白；LLM 返回异常时按预期回退，不影响页面使用。
+- 剩余风险：
+  - LLM 开场白当前依赖 workflow LLM 实际返回质量；失败时只展示规则模板。
+  - 尚未在真实浏览器中逐个点击品牌、车型、对比、筛选、市场报告确认所有空会话视觉表现。
+
+## 2026-07-08 开场白切换修正
+
+- 目标：修复点击不同日报后聊天窗口仍显示旧默认开场白的问题。
+- 关键判断：旧默认 assistant 消息可能已进入本地会话记录，导致前端把它当作历史消息而不再刷新报告类型开场白。
+- 本次改动：
+  - `frontend/src/main.js` 将自动开场白标记为 `kind: greeting`，并在切换报告时允许替换这类消息。
+  - 兼容旧文案 `输入新任务...` 和 `已切换到...`，如果会话里只有这类旧开场白，也会按当前报告重新生成。
+  - 如果会话已有真实用户/Agent 交流，则不会覆盖历史记录。
+- 验证命令：
+  - `node --check frontend\src\main.js`
+  - `node --check frontend\src\report-viewer.js`
+
 ## 2026-07-08 数据管理 MVP 实施
 
 - 目标：落地日报数据管理 MVP，覆盖报告索引、列表筛选、软归档、恢复和基于报告的 follow-up 生成。

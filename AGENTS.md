@@ -84,6 +84,7 @@ http://127.0.0.1:8000/frontend/
 - 私有本地配置可用仓库根目录 `.env.local` 或 `config/local.yaml`，二者必须保持忽略状态，不得提交真实 Key。
 - 前端不得保存 API Key 到 `localStorage`，不得直接执行任意 Python/Shell。
 - 后端只能执行白名单工作流，不接受任意命令或任意文件路径。
+- Windows 本地常驻启动只允许通过仓库内启动脚本完成，例如 `start_workbench.cmd`、`start_workbench_background.cmd` 及其启动目录快捷方式；不要把服务安装成系统级常驻服务，也不要把浏览器自动打开绑到后台自启动入口。
 - `data/processed/enriched/YYYY-MM-DD.json` 中的车型配置必须通过车型名或版本名匹配校验后才可进入报告；未通过校验时只能提示“补充配置数据不可信/已跳过”。
 - `processor.py` 应保留品牌下全量车型，报告层按需要限制展示数量，不要在清洗阶段截断为 TOP10。
 - 修改一级目录职责、入口脚本或数据约定时，同步更新该目录的 `README.md`。

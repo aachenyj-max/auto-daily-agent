@@ -12,7 +12,7 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, unquote, urlparse
 
 from agent_runner import run_agent_workflow
-from llm_client import load_llm_config
+from llm_client import chat_completion, load_llm_config
 from report_registry import (
     archive_reports,
     build_followup_prompt,
@@ -46,6 +46,75 @@ def llm_status_payload() -> dict:
         "workflow": workflow,
         "report": report,
     }
+
+
+def report_greeting_template(report: dict | None = None, mode: str = "new") -> str:
+    if mode == "new" or not report:
+        return "告诉我你想生成哪类日报：品牌、车型、对比、价格筛选或市场总览。"
+
+    title = str(report.get("title") or report.get("file_name") or "当前报告")
+    report_type = str(report.get("report_type") or "").lower()
+    scope = report.get("scope") if isinstance(report.get("scope"), dict) else {}
+    brands = [str(item) for item in scope.get("brands", []) if item]
+    series = [str(item) for item in scope.get("series", []) if item]
+    subject = " vs ".join(series[:2]) or "、".join(brands[:2]) or title
+
+    if report_type == "brand":
+        return f"当前基于「{subject}」品牌日报。你可以继续追问销量结构、车型表现、价格区间或购买建议。"
+    if report_type == "series":
+        return f"当前基于「{subject}」车型报告。你可以继续追问配置差异、价格走势、竞品对比或购买建议。"
+    if report_type == "compare":
+        return f"当前基于「{subject}」对比报告。你可以继续追问优劣势、适合人群、价格配置或最终推荐。"
+    if report_type == "filtered":
+        return "当前基于筛选报告。你可以继续收窄预算、车身类型、能源形式或品牌范围。"
+    if report_type == "market":
+        return "当前基于市场总览日报。你可以继续追问细分市场、品牌排名、价格带变化或购买窗口。"
+    return f"当前基于「{title}」。你可以继续追问关键结论、风险点、车型对比或购买建议。"
+
+
+def report_greeting_payload(report: dict | None = None, mode: str = "new") -> dict:
+    fallback = report_greeting_template(report, mode=mode)
+    if mode == "new" or not report:
+        return {"greeting": fallback, "llm_used": False, "fallback_reason": "rule template"}
+
+    summary = report.get("summary") if isinstance(report.get("summary"), dict) else {}
+    scope = report.get("scope") if isinstance(report.get("scope"), dict) else {}
+    context = {
+        "title": report.get("title"),
+        "report_type": report.get("report_type"),
+        "date": report.get("date"),
+        "scope": {
+            "brands": scope.get("brands", []),
+            "series": scope.get("series", []),
+            "filters": scope.get("filters", {}),
+        },
+        "excerpt": summary.get("excerpt", ""),
+    }
+    messages = [
+        {
+            "role": "system",
+            "content": (
+                "你是汽车日报工作台的本地任务助手。请根据报告元数据生成一句中文开场白，"
+                "用于空聊天窗口。要求：30到60字；直接说明当前基于什么报告；给出可继续追问的方向；"
+                "不要寒暄，不要使用Markdown，不要编造元数据之外的车型或品牌。"
+            ),
+        },
+        {"role": "user", "content": json.dumps(context, ensure_ascii=False)},
+    ]
+    try:
+        greeting = chat_completion(
+            messages,
+            profile="workflow",
+            temperature=0.2,
+            max_tokens=160,
+            timeout=20,
+            retries=0,
+        ).strip().strip('"').strip("'")
+        if not greeting:
+            raise RuntimeError("empty greeting")
+        return {"greeting": greeting, "llm_used": True, "fallback_reason": None}
+    except Exception as exc:
+        return {"greeting": fallback, "llm_used": False, "fallback_reason": str(exc)}
 
 
 class ReusableThreadingHTTPServer(ThreadingHTTPServer):
@@ -281,6 +350,16 @@ class WorkflowHandler(SimpleHTTPRequestHandler):
                 self.send_json(self.create_job(prompt, bool(payload.get("use_llm", True)), source_report_id=report_id))
                 return
 
+            if parsed.path == "/api/reports/greeting":
+                mode = str(payload.get("mode") or "new").strip() or "new"
+                report_id = str(payload.get("report_id") or "").strip()
+                report = get_report_record(report_id) if report_id else None
+                if report_id and not report:
+                    self.send_json({"error": "report not found"}, status=404)
+                    return
+                self.send_json(report_greeting_payload(report, mode=mode))
+                return
+
             self.send_error(HTTPStatus.NOT_FOUND)
         except Exception as exc:
             self.send_json({"error": str(exc)}, status=500)
@@ -325,7 +404,7 @@ class WorkflowHandler(SimpleHTTPRequestHandler):
 
         if path.startswith("/api/reports/") and path.count("/") == 3:
             report_id = path.rsplit("/", 1)[-1]
-            if report_id not in {"list", "generate", "archive", "restore", "followup", "latest", "sync"}:
+            if report_id not in {"list", "generate", "archive", "restore", "followup", "greeting", "latest", "sync"}:
                 report = get_report_record(report_id)
                 if not report:
                     self.send_json({"error": "report not found"}, status=404)

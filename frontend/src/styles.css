@@ -182,8 +182,7 @@ textarea:focus-visible {
 .search-box input,
 .report-filters input,
 .report-filters select,
-#generate-prompt,
-#followup-input {
+#agent-input {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--surface);
@@ -405,8 +404,7 @@ textarea:focus-visible {
   overflow-y: auto;
 }
 
-.generate-panel,
-.manage-panel {
+.agent-panel {
   max-width: 1120px;
   margin-bottom: 16px;
   border: 1px solid var(--border);
@@ -416,24 +414,20 @@ textarea:focus-visible {
   padding: 16px;
 }
 
-.generate-head,
-.manage-head,
-.followup-actions {
+.agent-head,
+.agent-compose {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 14px;
 }
 
-.generate-head h2,
-.manage-head h2 {
+.agent-head h2 {
   margin: 0;
   font-size: 18px;
 }
 
-.generate-head p,
-.manage-head p,
-.followup-box label {
+.agent-head p {
   margin: 4px 0 0;
   color: var(--muted);
   font-size: 13px;
@@ -445,8 +439,7 @@ textarea:focus-visible {
   flex-wrap: wrap;
 }
 
-#generate-prompt,
-#followup-input {
+#agent-input {
   display: block;
   width: 100%;
   resize: vertical;
@@ -455,16 +448,129 @@ textarea:focus-visible {
   padding: 10px 12px;
 }
 
-#generate-prompt {
-  min-height: 82px;
+#agent-input {
+  min-height: 74px;
 }
 
-.generate-options {
+.agent-meta-row {
   display: flex;
   align-items: center;
   gap: 12px;
   margin-top: 10px;
   flex-wrap: wrap;
+}
+
+.agent-selected-report {
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat-window {
+  display: grid;
+  grid-template-rows: auto minmax(180px, 320px) auto;
+  margin-top: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-soft);
+  padding: 10px 12px;
+}
+
+.chat-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.chat-kicker {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+#chat-title {
+  display: block;
+  max-width: 680px;
+  overflow: hidden;
+  font-size: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.agent-thread {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  overflow: auto;
+  background:
+    linear-gradient(180deg, rgba(36, 89, 214, .04), transparent 120px),
+    #fbfcfe;
+  padding: 12px;
+}
+
+.agent-message {
+  display: grid;
+  gap: 5px;
+  max-width: min(78%, 720px);
+}
+
+.agent-message-user {
+  justify-self: end;
+}
+
+.agent-message-assistant {
+  justify-self: start;
+}
+
+.agent-message-role,
+.agent-message-meta {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.agent-message-user .agent-message-role,
+.agent-message-user .agent-message-meta {
+  text-align: right;
+}
+
+.agent-message-body {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 9px 11px;
+  font-size: 14px;
+  line-height: 1.58;
+  white-space: pre-wrap;
+}
+
+.agent-message-user .agent-message-body {
+  border-color: #bdd0ff;
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+}
+
+.agent-compose {
+  align-items: stretch;
+  border-top: 1px solid var(--border);
+  background: var(--surface-soft);
+  padding: 10px;
+}
+
+.agent-compose .btn {
+  min-width: 92px;
 }
 
 .model-status {
@@ -547,17 +653,6 @@ textarea:focus-visible {
 
 .job-task:empty {
   display: none;
-}
-
-.followup-box {
-  display: grid;
-  gap: 8px;
-  margin-top: 14px;
-}
-
-#followup-target {
-  color: var(--muted);
-  font-size: 12px;
 }
 
 .summary-strip {
@@ -784,17 +879,30 @@ mark.search-hl {
   .toolbar-actions > *,
   .search-box,
   .search-box input,
-  .generate-head,
-  .manage-head,
-  .followup-actions,
+  .agent-head,
+  .chat-header,
+  .chat-actions,
+  .agent-compose,
   .manage-actions {
     width: 100%;
   }
 
-  .generate-head,
-  .manage-head,
-  .followup-actions {
+  .agent-head,
+  .chat-header,
+  .agent-compose {
     display: grid;
+  }
+
+  .chat-actions {
+    justify-content: stretch;
+  }
+
+  .agent-message {
+    max-width: 100%;
+  }
+
+  #chat-title {
+    max-width: 100%;
   }
 
   .btn {

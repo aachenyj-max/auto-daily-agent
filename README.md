@@ -148,6 +148,30 @@ python tools\workflow_server.py
 
 也可以直接双击 `start_workbench.cmd`，它会在本地启动工作台服务并自动打开浏览器。
 
+如果你更希望用一个稳定、可见日志的双击入口，直接运行：
+
+```powershell
+run_workbench.bat
+```
+
+它会打开一个名为 `Auto Daily Workbench Server` 的命令行窗口来常驻运行后端，再自动打开工作台页面。页面关闭后，服务窗口仍会保留；不需要时直接关掉该窗口即可。
+
+如果你的机器对“新开窗口再拉起 Python”这条链路仍不稳定，就直接双击：
+
+```powershell
+run_workbench_server.bat
+```
+
+这个版本最直接：在当前命令行窗口里前台运行 `workflow_server.py`，同时打开工作台网址。使用期间不要关闭这个黑窗口；关闭它就等于停止本地服务。
+
+如果你不想每次手动重启服务，可以运行一次：
+
+```powershell
+install_workbench_autostart.cmd
+```
+
+它会把 `start_workbench_background.cmd` 注册到 Windows 启动目录。之后每次登录系统都会静默检查并拉起工作台后端，但不会主动打开浏览器；你只需要访问 `http://127.0.0.1:8000/frontend/`。如需取消，运行 `remove_workbench_autostart.cmd`。
+
 启动后访问：
 
 ```text
@@ -155,6 +179,8 @@ http://127.0.0.1:8000/frontend/
 ```
 
 前端可以输入自然语言任务，例如“生成今天小鹏汽车日报，重点分析小鹏MONA M03”或“生成20万以内SUV购买建议”。后端只执行白名单工作流：解析需求、确认当天数据、抓取/清洗/补充缺失数据、生成 Markdown、校验产物。API Key 不在页面显示或传输，应由本地后端通过环境变量或私有本地配置提供。
+
+工作台的主输入区是对话式任务入口：没有选中报告时会创建新报告任务，选中左侧报告后会基于当前报告继续交流。如果 Agent 需要确认车型或其他条件，追问会显示在同一对话流里，继续在同一个输入框回答即可。
 
 生成任务默认启用大模型路径。工作流分为两套 LLM profile：`workflow` 负责解析自然语言任务，系统提示词为 `config/workflow_prompt.md`；`report` 负责生成报告正文，系统提示词为 `config/report_agent_prompt.md`。若某一路 LLM 配置缺失或调用失败，会自动回退到规则模板或规则解析。
 
